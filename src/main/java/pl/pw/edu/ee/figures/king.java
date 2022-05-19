@@ -114,38 +114,39 @@ public class king extends figure {
             }
         }
 
+        /* Castling only for 8x8 standard and */
         int i = 0;
         if (this.color == true) {
             i = 0;
-            while (currentX + i < board[0].length) {
-                if (board[currentY][currentX + i].value == 5 && board[currentY][currentX + i].hasBeenMoved == false) {
+            while (currentX + i < board.length) {
+                if (board[currentX + i][currentY].value == 5 && board[currentX + i][currentY].hasBeenMoved == false) {
                     for (int j = currentX + i + 1; j <= 6; j++) {
-                        if (attackedByBlackBoard[currentY][currentX + j] == true
-                                || board[currentY][currentX + j].exists == true) {
+                        if (attackedByBlackBoard[currentX + j][currentY] == true
+                                || board[currentX + j][currentY].exists == true) {
                             break;
                         }
                     }
-                    availableCastle[7][6] = true;
+                    availableCastle[7][7] = true;
                 }
-                if ((board[currentY][currentX + i].value != 5 && board[currentY][currentX + i].value != 0)
-                        || attackedByBlackBoard[currentY][currentX + i] == true) {
+                if ((board[currentX + i][currentY].value != 5 && board[currentX + i][currentY].value != 0)
+                        || attackedByBlackBoard[currentX + i][currentY] == true) {
                     break;
                 }
                 i++;
             }
             i = 0;
             while (currentX - i >= 0) {
-                if (board[currentY][currentX - i].value == 5 && board[currentY][currentX - i].hasBeenMoved == false) {
-                    for (int j = currentX - i - 1; j >= 1; j--) {
-                        if (attackedByBlackBoard[currentY][currentX - j] == true
-                                || board[currentY][currentX - j].exists == true) {
+                if (board[currentX - i][currentY].value == 5 && board[currentX - i][currentY].hasBeenMoved == false) {
+                    for (int j = currentX - i - 1; j >= 2; j--) {
+                        if (attackedByBlackBoard[currentX - j][currentY] == true
+                                || board[currentX - j][currentY].exists == true) {
                             break;
                         }
                     }
-                    availableCastle[7][2] = true;
+                    availableCastle[0][7] = true;
                 }
-                if ((board[currentY][currentX - i].value != 5 && board[currentY][currentX - i].value != 0)
-                        || attackedByBlackBoard[currentY][currentX - i] == true) {
+                if ((board[currentX - i][currentY].value != 5 && board[currentX - i][currentY].value != 0)
+                        || attackedByBlackBoard[currentX - i][currentY] == true) {
                     break;
                 }
                 i++;
@@ -153,35 +154,35 @@ public class king extends figure {
         }
         if (this.color == false) {
             i = 0;
-            while (currentX + i < board[0].length) {
-                if (board[currentY][currentX + i].value == 5 && board[currentY][currentX + i].hasBeenMoved == false) {
+            while (currentX + i < board.length) {
+                if (board[currentX + i][currentY].value == 5 && board[currentX + i][currentY].hasBeenMoved == false) {
                     for (int j = currentX + i + 1; j <= 6; j++) {
-                        if (attackedByWhiteBoard[currentY][currentX + j] == true
-                                || board[currentY][currentX + j].exists == true) {
+                        if (attackedByWhiteBoard[currentX + j][currentY] == true
+                                || board[currentX + j][currentY].exists == true) {
                             break;
                         }
                     }
-                    availableCastle[0][6] = true;
+                    availableCastle[7][0] = true;
                 }
-                if ((board[currentY][currentX + i].value != 5 && board[currentY][currentX + i].value != 0)
-                        || attackedByWhiteBoard[currentY][currentX + i] == true) {
+                if ((board[currentX + i][currentY].value != 5 && board[currentX + i][currentY].value != 0)
+                        || attackedByWhiteBoard[currentX + i][currentY] == true) {
                     break;
                 }
                 i++;
             }
             i = 0;
             while (currentX - i >= 0) {
-                if (board[currentY][currentX - i].value == 5 && board[currentY][currentX - i].hasBeenMoved == false) {
-                    for (int j = currentX - i - 1; j >= 1; j--) {
-                        if (attackedByWhiteBoard[currentY][currentX - j] == true
-                                || board[currentY][currentX - j].exists == true) {
+                if (board[currentX - i][currentY].value == 5 && board[currentX - i][currentY].hasBeenMoved == false) {
+                    for (int j = currentX - i - 1; j >= 2; j--) {
+                        if (attackedByWhiteBoard[currentX - j][currentY] == true
+                                || board[currentX - j][currentY].exists == true) {
                             break;
                         }
                     }
-                    availableCastle[0][2] = true;
+                    availableCastle[0][0] = true;
                 }
-                if ((board[currentY][currentX - i].value != 5 && board[currentY][currentX - i].value != 0)
-                        || attackedByWhiteBoard[currentY][currentX - i] == true) {
+                if ((board[currentX - i][currentY].value != 5 && board[currentX - i][currentY].value != 0)
+                        || attackedByWhiteBoard[currentX - i][currentY] == true) {
                     break;
                 }
                 i++;

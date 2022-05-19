@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -72,7 +73,7 @@ public class chess implements ActionListener {
 		frame.setIconImage(piecesIcons[10].getImage());
 		frame.getContentPane().setBackground(new Color(50, 50, 50)); // ???
 		frame.setLayout(new BorderLayout());
-		//frame.setLayout(null);
+		// frame.setLayout(null);
 		frame.setVisible(true);
 
 		textfield.setBackground(new Color(12, 15, 18));
@@ -137,8 +138,6 @@ public class chess implements ActionListener {
 							moveFigure(selectedButtonX, selectedButtonY, j, i); // mvoes a figure on
 							// board
 						}
-
-						moveGUI(selectedButtonX, selectedButtonY, j, i);
 						for (int k = 0; k < defaultSettings.boardWidth; k++) { // turn off all buttons
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
 								buttons[l][k].setBackground(defaultColor);
@@ -165,10 +164,9 @@ public class chess implements ActionListener {
 					} else if (board[selectedButtonX][selectedButtonY].exists == false && buttonIsSelected == true) {
 						textfield.setText("Nothing here");
 					} else if (buttonIsSelected == false) {
-						if (whiteTurn == true){
+						if (whiteTurn == true) {
 							textfield.setText("White on move");
-						}
-						else{
+						} else {
 							textfield.setText("Black on move");
 						}
 						// textfield.setText("Click something");
@@ -244,42 +242,31 @@ public class chess implements ActionListener {
 	}
 
 	void moveGUI(int selectedButtonX, int selectedButtonY, int j, int i) {
-		buttons[j][i].setIcon(buttons[selectedButtonX][selectedButtonY].getIcon());
+		Icon tmpIcon = buttons[selectedButtonX][selectedButtonY].getIcon();
 		buttons[selectedButtonX][selectedButtonY].setIcon(null);
+		buttons[j][i].setIcon(tmpIcon);
 	}
 
 	public void moveFigure(int fromX, int fromY, int toX, int toY) {
-		board[toX][toY] = board[fromX][fromY];
-		board[toX][toY].hasBeenMoved = true;
-		board[toX][toY].currentX = toX;
-		board[toX][toY].currentY = toY;
+		figure tmpFigure = board[fromX][fromY];
 		board[fromX][fromY] = new figure() {
 		};
 		board[fromX][fromY].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
 		board[fromX][fromY].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+		board[toX][toY] = tmpFigure;
+		board[toX][toY].hasBeenMoved = true;
+		board[toX][toY].currentX = toX;
+		board[toX][toY].currentY = toY;
+		moveGUI(fromX, fromY, toX, toY);
 	}
 
-	public void moveCastle(int fromX, int fromY, int toX, int toY) {
-		moveFigure(fromX, fromY, toX, toY);
-		int i = 1;
-		if (toX > fromX) { // short castle
-			i = 1;
-			while (fromX + i < board.length) {
-				if (board[fromX + i][fromY].value == 5) {
-					moveFigure(fromX + i, fromY, 5, toY);
-					moveGUI(fromX + i, fromY, 5, toY);
-				}
-				i++;
-			}
+	public void moveCastle(int kingX, int kingY, int rookX, int rookY) {
+		if (rookX > kingX) { // short castle
+			moveFigure(rookX, rookY, 5, rookY);
+			moveFigure(kingX, kingY, 6, kingY);
 		} else { // long castle
-			i = 1;
-			while (fromX - i >= 0) {
-				if (board[fromX - i][fromY].value == 5) {
-					moveFigure(fromX + i, fromY, 3, toY);
-					moveGUI(fromX + i, fromY, 3, toY);
-				}
-				i++;
-			}
+			moveFigure(rookX, rookY, 3, rookY);
+			moveFigure(kingX, kingY, 2, kingY);
 		}
 	}
 

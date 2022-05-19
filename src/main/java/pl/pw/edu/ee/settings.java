@@ -6,7 +6,7 @@ public class settings {
         String tilecolor1 = "Green";
         String tilecolor2 = "White";
         boolean whiteStartsGame = true;
-        String[][] defaultPosition = {
+        String[][] defaultPosition2 = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -26,14 +26,14 @@ public class settings {
                         { "  ", "wP", "  ", "wB", "  ", "wQ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }
         };
-        String[][] defaultPosition2 = {
-                        { "  ", "bB", "  ", "  ", "  ", "  ", "  ", "  " },
-                        { "  ", "bK", "  ", "  ", "  ", "  ", "bP", "bP" },
+        String[][] defaultPosition = {
+                        { "bR", "  ", "  ", "  ", "bK", "  ", "  ", "bR" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-                        { "  ", "  ", "  ", "bN", "  ", "  ", "  ", "  " },
-                        { "  ", "  ", "  ", "wN", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-                        { "  ", "  ", "  ", "  ", "  ", "  ", "wP", "  " },
-                        { "  ", "wK", "  ", "  ", "  ", "  ", "  ", "wP" }
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "bN" },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "wR", "  ", "  ", "  ", "  ", "  ", "wK", "wR" }
         };
 }
