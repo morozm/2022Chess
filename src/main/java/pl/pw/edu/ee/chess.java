@@ -48,6 +48,7 @@ public class chess implements ActionListener {
 	boolean buttonIsSelected = false;
 	int selectedButtonY;
 	int selectedButtonX;
+	int[] lastMove = new int[4];
 	Color defaultColor = UIManager.getColor("Panel.background");
 
 	String[] pieces = { "bP", "bR", "bN", "bB", "bK", "bQ", "wP", "wR", "wN", "wB", "wK", "wQ" };
@@ -110,23 +111,20 @@ public class chess implements ActionListener {
 		// makeSound("bombsiteB");
 		loadPosition();
 		setAvailableMovesForBoard();
+		System.out.println("test");
 		// firstTurn();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
 				if (e.getSource() == buttons[j][i]) {
 					if ((selectedButtonX == j) && (selectedButtonY == i) && (buttonIsSelected == true)) {
 						// turn off selected button
 						buttonIsSelected = false;
-						for (int k = 0; k < defaultSettings.boardWidth; k++) {
-							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								buttons[l][k].setBackground(defaultColor);
-							}
-						}
+						turnOffAllButtons();
+						turnOnLastMove();
 					} else if ((board[selectedButtonX][selectedButtonY].availableMoves[j][i] == true
 							|| board[selectedButtonX][selectedButtonY].availableStrikes[j][i] == true
 							|| board[selectedButtonX][selectedButtonY].availableCastle[j][i] == true)
@@ -134,25 +132,23 @@ public class chess implements ActionListener {
 							&& (board[selectedButtonX][selectedButtonY].color == whiteTurn)) {
 						if (board[selectedButtonX][selectedButtonY].availableCastle[j][i] == true) {
 							moveCastle(selectedButtonX, selectedButtonY, j, i);
+							saveLastMove(selectedButtonX, selectedButtonY, j, i);
+							turnOnLastMove();
 						} else {
-							moveFigure(selectedButtonX, selectedButtonY, j, i); // mvoes a figure on
-							// board
+							moveFigure(selectedButtonX, selectedButtonY, j, i);
+							saveLastMove(selectedButtonX, selectedButtonY, j, i);
+							turnOnLastMove();
+							// mvoes a figure on board
 						}
-						for (int k = 0; k < defaultSettings.boardWidth; k++) { // turn off all buttons
-							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								buttons[l][k].setBackground(defaultColor);
-							}
-						}
+						turnOffAllButtons();
 						buttonIsSelected = false;
 						setAvailableMovesForBoard();
 						turnNumber++;
 						whiteTurn = !whiteTurn;
+						turnOnLastMove();
 					} else { // turn off all buttons and select one
-						for (int k = 0; k < defaultSettings.boardWidth; k++) {
-							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								buttons[l][k].setBackground(defaultColor);
-							}
-						}
+						turnOffAllButtons();
+						turnOnLastMove();
 						buttonIsSelected = true;
 						selectedButtonX = j;
 						selectedButtonY = i;
@@ -230,15 +226,23 @@ public class chess implements ActionListener {
 	}
 
 	void setAvailableMovesForBoard() {
+		// clear attackedBoard and then set for each figure
+		for (int i = 0; i < defaultSettings.boardWidth; i++) {
+			for (int j = 0; j < defaultSettings.boardLength; j++) {
+				defaultBoard.attackedByWhiteBoard = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+				defaultBoard.attackedByBlackBoard = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+			}
+		}
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
 				board[j][i].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
 				board[j][i].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
 				board[j][i].availableCastle = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-				board[j][i].setAvailableMoves(board, defaultBoard.attackedByWhiteBoard,
-						defaultBoard.attackedByBlackBoard);
+				this.board[j][i].setAvailableMoves(board, this.defaultBoard.attackedByWhiteBoard,
+						this.defaultBoard.attackedByBlackBoard);
 			}
 		}
+		System.out.println("test");
 	}
 
 	void moveGUI(int selectedButtonX, int selectedButtonY, int j, int i) {
@@ -267,6 +271,28 @@ public class chess implements ActionListener {
 		} else { // long castle
 			moveFigure(rookX, rookY, 3, rookY);
 			moveFigure(kingX, kingY, 2, kingY);
+		}
+	}
+
+	public void saveLastMove(int fromX, int fromY, int toX, int toY) {
+		lastMove[0] = fromX;
+		lastMove[1] = fromY;
+		lastMove[2] = toX;
+		lastMove[3] = toY;
+	}
+
+	public void turnOnLastMove() {
+		if (turnNumber != 1 || whiteTurn != true) {
+			buttons[lastMove[0]][lastMove[1]].setBackground(new Color(255, 255, 200));
+			buttons[lastMove[2]][lastMove[3]].setBackground(new Color(255, 255, 200));
+		}
+	}
+
+	public void turnOffAllButtons() {
+		for (int k = 0; k < defaultSettings.boardWidth; k++) {
+			for (int l = 0; l < defaultSettings.boardLength; l++) {
+				buttons[l][k].setBackground(defaultColor);
+			}
 		}
 	}
 
