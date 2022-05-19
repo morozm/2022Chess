@@ -91,13 +91,13 @@ public class chess implements ActionListener {
 
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				buttons[i][j] = new JButton();
-				button_panel.add(buttons[i][j]);
-				buttons[i][j].setFont(new Font("Cheri Liney", Font.BOLD, 30));
-				buttons[i][j].setBackground(defaultColor);
-				buttons[i][j].setFocusable(false);
-				buttons[i][j].addActionListener(this);
-				board[i][j] = new figure() {
+				buttons[j][i] = new JButton();
+				button_panel.add(buttons[j][i]);
+				buttons[j][i].setFont(new Font("Cheri Liney", Font.BOLD, 30));
+				buttons[j][i].setBackground(defaultColor);
+				buttons[j][i].setFocusable(false);
+				buttons[j][i].addActionListener(this);
+				board[j][i] = new figure() {
 				};
 			}
 		}
@@ -106,7 +106,7 @@ public class chess implements ActionListener {
 		frame.add(title_panel, BorderLayout.NORTH);
 		frame.add(button_panel);
 
-		makeSound("bombsiteB");
+		// makeSound("bombsiteB");
 		loadPosition();
 		setAvailableMovesForBoard();
 		// firstTurn();
@@ -117,32 +117,31 @@ public class chess implements ActionListener {
 
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				if (e.getSource() == buttons[i][j]) {
-					if ((selectedButtonX == j) && (selectedButtonY == i) && (buttonIsSelected == true)) { // turn off
-																											// selected
-																											// button
+				if (e.getSource() == buttons[j][i]) {
+					if ((selectedButtonX == j) && (selectedButtonY == i) && (buttonIsSelected == true)) {
+						// turn off selected button
 						buttonIsSelected = false;
 						for (int k = 0; k < defaultSettings.boardWidth; k++) {
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								buttons[k][l].setBackground(defaultColor);
+								buttons[l][k].setBackground(defaultColor);
 							}
 						}
-					} else if ((board[selectedButtonY][selectedButtonX].availableMoves[i][j] == true
-							|| board[selectedButtonY][selectedButtonX].availableStrikes[i][j] == true
-							|| board[selectedButtonY][selectedButtonX].availableCastle[i][j] == true)
+					} else if ((board[selectedButtonX][selectedButtonY].availableMoves[j][i] == true
+							|| board[selectedButtonX][selectedButtonY].availableStrikes[j][i] == true
+							|| board[selectedButtonX][selectedButtonY].availableCastle[j][i] == true)
 							&& (buttonIsSelected == true)
-							&& (board[selectedButtonY][selectedButtonX].color == whiteTurn)) {
-						if (board[selectedButtonY][selectedButtonX].availableCastle[i][j] == true) {
-							moveCastle(selectedButtonY, selectedButtonX, i, j);
+							&& (board[selectedButtonX][selectedButtonY].color == whiteTurn)) {
+						if (board[selectedButtonX][selectedButtonY].availableCastle[j][i] == true) {
+							moveCastle(selectedButtonX, selectedButtonY, j, i);
 						} else {
-							moveFigure(selectedButtonY, selectedButtonX, i, j); // mvoes a figure on
+							moveFigure(selectedButtonX, selectedButtonY, j, i); // mvoes a figure on
 							// board
 						}
 
-						moveGUI(selectedButtonY, selectedButtonX, i, j);
+						moveGUI(selectedButtonX, selectedButtonY, j, i);
 						for (int k = 0; k < defaultSettings.boardWidth; k++) { // turn off all buttons
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								buttons[k][l].setBackground(defaultColor);
+								buttons[l][k].setBackground(defaultColor);
 							}
 						}
 						buttonIsSelected = false;
@@ -152,18 +151,18 @@ public class chess implements ActionListener {
 					} else { // turn off all buttons and select one
 						for (int k = 0; k < defaultSettings.boardWidth; k++) {
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								buttons[k][l].setBackground(defaultColor);
+								buttons[l][k].setBackground(defaultColor);
 							}
 						}
 						buttonIsSelected = true;
-						selectedButtonY = i;
 						selectedButtonX = j;
-						buttons[i][j].setBackground(new Color(230, 230, 230));
+						selectedButtonY = i;
+						buttons[j][i].setBackground(new Color(230, 230, 230));
 					}
-					if (board[selectedButtonY][selectedButtonX].color != whiteTurn
-							&& board[selectedButtonY][selectedButtonX].exists == true && buttonIsSelected == true) {
+					if (board[selectedButtonX][selectedButtonY].color != whiteTurn
+							&& board[selectedButtonX][selectedButtonY].exists == true && buttonIsSelected == true) {
 						textfield.setText("Not your piece");
-					} else if (board[selectedButtonY][selectedButtonX].exists == false && buttonIsSelected == true) {
+					} else if (board[selectedButtonX][selectedButtonY].exists == false && buttonIsSelected == true) {
 						textfield.setText("Nothing here");
 					} else if (buttonIsSelected == false) {
 						if (whiteTurn == true){
@@ -173,19 +172,19 @@ public class chess implements ActionListener {
 							textfield.setText("Black on move");
 						}
 						// textfield.setText("Click something");
-					} else if (board[selectedButtonY][selectedButtonX].color == whiteTurn
-							&& board[selectedButtonY][selectedButtonX].exists == true && buttonIsSelected == true) {
+					} else if (board[selectedButtonX][selectedButtonY].color == whiteTurn
+							&& board[selectedButtonX][selectedButtonY].exists == true && buttonIsSelected == true) {
 						textfield.setText("OK but where?");
 						for (int k = 0; k < defaultSettings.boardWidth; k++) {
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
-								if (board[selectedButtonY][selectedButtonX].availableMoves[k][l] == true) {
-									buttons[k][l].setBackground(new Color(200, 255, 200));
+								if (board[selectedButtonX][selectedButtonY].availableMoves[l][k] == true) {
+									buttons[l][k].setBackground(new Color(200, 255, 200));
 								}
-								if (board[selectedButtonY][selectedButtonX].availableStrikes[k][l] == true) {
-									buttons[k][l].setBackground(new Color(255, 200, 200));
+								if (board[selectedButtonX][selectedButtonY].availableStrikes[l][k] == true) {
+									buttons[l][k].setBackground(new Color(255, 200, 200));
 								}
-								if (board[selectedButtonY][selectedButtonX].availableCastle[k][l] == true) {
-									buttons[k][l].setBackground(new Color(200, 200, 255));
+								if (board[selectedButtonX][selectedButtonY].availableCastle[l][k] == true) {
+									buttons[l][k].setBackground(new Color(200, 200, 255));
 								}
 							}
 						}
@@ -203,31 +202,31 @@ public class chess implements ActionListener {
 				}
 				for (int k = 0; k < pieces.length; k++) {
 					if (pieces[k] == defaultSettings.defaultPosition[i][j]) {
-						buttons[i][j].setIcon(piecesIcons[k]);
+						buttons[j][i].setIcon(piecesIcons[k]);
 					}
 				}
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'R')
-					board[i][j] = new rook();
+					board[j][i] = new rook();
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'N')
-					board[i][j] = new knight();
+					board[j][i] = new knight();
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'B')
-					board[i][j] = new bishop();
+					board[j][i] = new bishop();
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'Q')
-					board[i][j] = new queen();
+					board[j][i] = new queen();
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'K')
-					board[i][j] = new king();
+					board[j][i] = new king();
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'P')
-					board[i][j] = new pawn();
+					board[j][i] = new pawn();
 				if (defaultSettings.defaultPosition[i][j].charAt(0) == 'w') {
-					board[i][j].color = true;
-					board[i][j].exists = true;
+					board[j][i].color = true;
+					board[j][i].exists = true;
 				}
 				if (defaultSettings.defaultPosition[i][j].charAt(0) == 'b') {
-					board[i][j].color = false;
-					board[i][j].exists = true;
+					board[j][i].color = false;
+					board[j][i].exists = true;
 				}
-				board[i][j].currentX = j;
-				board[i][j].currentY = i;
+				board[j][i].currentX = j;
+				board[j][i].currentY = i;
 			}
 		}
 	}
@@ -235,50 +234,49 @@ public class chess implements ActionListener {
 	void setAvailableMovesForBoard() {
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				board[i][j].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-				board[i][j].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-				board[i][j].availableCastle = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-				board[i][j].setAvailableMoves(board, defaultBoard.attackedByWhiteBoard,
+				board[j][i].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+				board[j][i].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+				board[j][i].availableCastle = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+				board[j][i].setAvailableMoves(board, defaultBoard.attackedByWhiteBoard,
 						defaultBoard.attackedByBlackBoard);
 			}
 		}
-		// System.out.println("dupa");
 	}
 
-	void moveGUI(int selectedButtonY, int selectedButtonX, int i, int j) {
-		buttons[i][j].setIcon(buttons[selectedButtonY][selectedButtonX].getIcon());
-		buttons[selectedButtonY][selectedButtonX].setIcon(null);
+	void moveGUI(int selectedButtonX, int selectedButtonY, int j, int i) {
+		buttons[j][i].setIcon(buttons[selectedButtonX][selectedButtonY].getIcon());
+		buttons[selectedButtonX][selectedButtonY].setIcon(null);
 	}
 
-	public void moveFigure(int fromY, int fromX, int toY, int toX) {
-		board[toY][toX] = board[fromY][fromX];
-		board[toY][toX].hasBeenMoved = true;
-		board[toY][toX].currentY = toY;
-		board[toY][toX].currentX = toX;
-		board[fromY][fromX] = new figure() {
+	public void moveFigure(int fromX, int fromY, int toX, int toY) {
+		board[toX][toY] = board[fromX][fromY];
+		board[toX][toY].hasBeenMoved = true;
+		board[toX][toY].currentX = toX;
+		board[toX][toY].currentY = toY;
+		board[fromX][fromY] = new figure() {
 		};
-		board[fromY][fromX].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-		board[fromY][fromX].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+		board[fromX][fromY].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+		board[fromX][fromY].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
 	}
 
-	public void moveCastle(int fromY, int fromX, int toY, int toX) {
-		moveFigure(fromY, fromX, toY, toX);
+	public void moveCastle(int fromX, int fromY, int toX, int toY) {
+		moveFigure(fromX, fromY, toX, toY);
 		int i = 1;
 		if (toX > fromX) { // short castle
 			i = 1;
-			while (fromX + i < board[0].length) {
-				if (board[fromY][fromX + i].value == 5) {
-					moveFigure(fromY, fromX + i, toY, 5);
-					moveGUI(fromY, fromX + i, toY, 5);
+			while (fromX + i < board.length) {
+				if (board[fromX + i][fromY].value == 5) {
+					moveFigure(fromX + i, fromY, 5, toY);
+					moveGUI(fromX + i, fromY, 5, toY);
 				}
 				i++;
 			}
 		} else { // long castle
 			i = 1;
 			while (fromX - i >= 0) {
-				if (board[fromY][fromX - i].value == 5) {
-					moveFigure(fromY, fromX + i, toY, 3);
-					moveGUI(fromY, fromX + i, toY, 3);
+				if (board[fromX - i][fromY].value == 5) {
+					moveFigure(fromX + i, fromY, 3, toY);
+					moveGUI(fromX + i, fromY, 3, toY);
 				}
 				i++;
 			}

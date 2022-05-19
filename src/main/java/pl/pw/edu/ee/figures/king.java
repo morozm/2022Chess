@@ -9,196 +9,108 @@ public class king extends figure {
     public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
             boolean[][] attackedByBlackBoard) {
 
-        if (currentY + 1 < board.length) {
-            if (board[currentY + 1][currentX].exists == false) {
-                availableMoves[currentY + 1][currentX] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX] = true;
-                }
-            } else if (board[currentY + 1][currentX].exists == true
-                    && this.color != board[currentY + 1][currentX].color) {
-                availableStrikes[currentY + 1][currentX] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX] = true;
-                }
+        if (currentX + 1 < board.length) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX + 1][currentY] = true;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX] = true;
-                }
+                attackedByBlackBoard[currentX + 1][currentY] = true;
+            }
+            if (board[currentX + 1][currentY].exists == false) {
+                availableMoves[currentX + 1][currentY] = true;
+            } else if (board[currentX + 1][currentY].exists == true
+                    && this.color != board[currentX + 1][currentY].color) {
+                availableStrikes[currentX + 1][currentY] = true;
             }
         }
-        if (currentY + 1 < board.length && currentX + 1 < board[0].length) {
-            if (board[currentY + 1][currentX + 1].exists == false) {
-                availableMoves[currentY + 1][currentX + 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX + 1] = true;
-                }
-            } else if (board[currentY + 1][currentX + 1].exists == true
-                    && this.color != board[currentY + 1][currentX + 1].color) {
-                availableStrikes[currentY + 1][currentX + 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX + 1] = true;
-                }
+        if (currentX + 1 < board.length && currentY + 1 < board[0].length) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX + 1][currentY + 1] = true;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX + 1] = true;
-                }
+                attackedByBlackBoard[currentX + 1][currentY + 1] = true;
+            }
+            if (board[currentX + 1][currentY + 1].exists == false) {
+                availableMoves[currentX + 1][currentY + 1] = true;
+            } else if (board[currentX + 1][currentY + 1].exists == true
+                    && this.color != board[currentX + 1][currentY + 1].color) {
+                availableStrikes[currentX + 1][currentY + 1] = true;
             }
         }
-        if (currentY - 1 >= 0) {
-            if (board[currentY - 1][currentX].exists == false) {
-                availableMoves[currentY - 1][currentX] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX] = true;
-                }
-            } else if (board[currentY - 1][currentX].exists == true
-                    && this.color != board[currentY - 1][currentX].color) {
-                availableStrikes[currentY - 1][currentX] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX] = true;
-                }
+        if (currentY + 1 < board[0].length) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX][currentY + 1] = true;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX] = true;
-                }
+                attackedByBlackBoard[currentX][currentY + 1] = true;
+            }
+            if (board[currentX][currentY + 1].exists == false) {
+                availableMoves[currentX][currentY + 1] = true;
+            } else if (board[currentX][currentY + 1].exists == true
+                    && this.color != board[currentX][currentY + 1].color) {
+                availableStrikes[currentX][currentY + 1] = true;
             }
         }
-        if (currentY - 1 >= 0 && currentX - 1 >= 0) {
-            if (board[currentY - 1][currentX - 1].exists == false) {
-                availableMoves[currentY - 1][currentX - 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX - 1] = true;
-                }
-            } else if (board[currentY - 1][currentX - 1].exists == true
-                    && this.color != board[currentY - 1][currentX - 1].color) {
-                availableStrikes[currentY - 1][currentX - 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX - 1] = true;
-                }
+        if (currentX - 1 >= 0 && currentY + 1 < board[0].length) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX - 1][currentY + 1] = true;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX - 1] = true;
-                }
+                attackedByBlackBoard[currentX - 1][currentY + 1] = true;
             }
-        }
-        if (currentX + 1 < board[0].length) {
-            if (board[currentY][currentX + 1].exists == false) {
-                availableMoves[currentY][currentX + 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY][currentX + 1] = true;
-                }
-            } else if (board[currentY][currentX + 1].exists == true
-                    && this.color != board[currentY][currentX + 1].color) {
-                availableStrikes[currentY][currentX + 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY][currentX + 1] = true;
-                }
-            } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY][currentX + 1] = true;
-                }
-            }
-        }
-        if (currentY - 1 >= 0 && currentX + 1 < board[0].length) {
-            if (board[currentY - 1][currentX + 1].exists == false) {
-                availableMoves[currentY - 1][currentX + 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX + 1] = true;
-                }
-            } else if (board[currentY - 1][currentX + 1].exists == true
-                    && this.color != board[currentY - 1][currentX + 1].color) {
-                availableStrikes[currentY - 1][currentX + 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX + 1] = true;
-                }
-            } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - 1][currentX + 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY - 1][currentX + 1] = true;
-                }
+            if (board[currentX - 1][currentY + 1].exists == false) {
+                availableMoves[currentX - 1][currentY + 1] = true;
+            } else if (board[currentX - 1][currentY + 1].exists == true
+                    && this.color != board[currentX - 1][currentY + 1].color) {
+                availableStrikes[currentX - 1][currentY + 1] = true;
             }
         }
         if (currentX - 1 >= 0) {
-            if (board[currentY][currentX - 1].exists == false) {
-                availableMoves[currentY][currentX - 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY][currentX - 1] = true;
-                }
-            } else if (board[currentY][currentX - 1].exists == true
-                    && this.color != board[currentY][currentX - 1].color) {
-                availableStrikes[currentY][currentX - 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY][currentX - 1] = true;
-                }
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX - 1][currentY] = true;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY][currentX - 1] = true;
-                }
+                attackedByBlackBoard[currentX - 1][currentY] = true;
+            }
+            if (board[currentX - 1][currentY].exists == false) {
+                availableMoves[currentX - 1][currentY] = true;
+            } else if (board[currentX - 1][currentY].exists == true
+                    && this.color != board[currentX - 1][currentY].color) {
+                availableStrikes[currentX - 1][currentY] = true;
             }
         }
-        if (currentY + 1 < board.length && currentX - 1 >= 0) {
-            if (board[currentY + 1][currentX - 1].exists == false) {
-                availableMoves[currentY + 1][currentX - 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX - 1] = true;
-                }
-            } else if (board[currentY + 1][currentX - 1].exists == true
-                    && this.color != board[currentY + 1][currentX - 1].color) {
-                availableStrikes[currentY + 1][currentX - 1] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX - 1] = true;
-                }
+        if (currentX - 1 >= 0 && currentY - 1 >= 0) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX - 1][currentY - 1] = true;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + 1][currentX - 1] = true;
-                } else {
-                    attackedByBlackBoard[currentY + 1][currentX - 1] = true;
-                }
+                attackedByBlackBoard[currentX - 1][currentY - 1] = true;
+            }
+            if (board[currentX - 1][currentY - 1].exists == false) {
+                availableMoves[currentX - 1][currentY - 1] = true;
+            } else if (board[currentX - 1][currentY - 1].exists == true
+                    && this.color != board[currentX - 1][currentY - 1].color) {
+                availableStrikes[currentX - 1][currentY - 1] = true;
+            }
+        }
+        if (currentY - 1 >= 0) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX][currentY - 1] = true;
+            } else {
+                attackedByBlackBoard[currentX][currentY - 1] = true;
+            }
+            if (board[currentX][currentY - 1].exists == false) {
+                availableMoves[currentX][currentY - 1] = true;
+            } else if (board[currentX][currentY - 1].exists == true
+                    && this.color != board[currentX][currentY - 1].color) {
+                availableStrikes[currentX][currentY - 1] = true;
+            }
+        }
+        if (currentX + 1 < board.length && currentY - 1 >= 0) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX + 1][currentY - 1] = true;
+            } else {
+                attackedByBlackBoard[currentX + 1][currentY - 1] = true;
+            }
+            if (board[currentX + 1][currentY - 1].exists == false) {
+                availableMoves[currentX + 1][currentY - 1] = true;
+            } else if (board[currentX + 1][currentY - 1].exists == true
+                    && this.color != board[currentX + 1][currentY - 1].color) {
+                availableStrikes[currentX + 1][currentY - 1] = true;
             }
         }
 

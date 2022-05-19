@@ -11,110 +11,70 @@ public class bishop extends figure {
 
         int i;
         i = 1;
-        while (currentY + i < board.length && currentX + i < board[0].length) {
-            if (board[currentY + i][currentX + i].exists == false) {
-                availableMoves[currentY + i][currentX + i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + i][currentX + i] = true;
-                } else {
-                    attackedByBlackBoard[currentY + i][currentX + i] = true;
-                }
+        while (currentX + i < board.length && currentY + i < board[0].length) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX + i][currentY + i] = true;
+            } else {
+                attackedByBlackBoard[currentX + i][currentY + i] = true;
+            }
+            if (board[currentX + i][currentY + i].exists == false) {
+                availableMoves[currentX + i][currentY + i] = true;
                 i++;
-            } else if (this.color != board[currentY + i][currentX + i].color) {
-                availableStrikes[currentY + i][currentX + i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + i][currentX + i] = true;
-                } else {
-                    attackedByBlackBoard[currentY + i][currentX + i] = true;
-                }
+            } else if (this.color != board[currentX + i][currentY + i].color) {
+                availableStrikes[currentX + i][currentY + i] = true;
                 break;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + i][currentX + i] = true;
-                } else {
-                    attackedByBlackBoard[currentY + i][currentX + i] = true;
-                }
                 break;
             }
         }
         i = 1;
-        while (currentY - i >= 0 && currentX + i < board[0].length) {
-            if (board[currentY - i][currentX + i].exists == false) {
-                availableMoves[currentY - i][currentX + i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - i][currentX + i] = true;
-                } else {
-                    attackedByBlackBoard[currentY - i][currentX + i] = true;
-                }
+        while (currentX - i >= 0 && currentY + i < board[0].length) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX - i][currentY + i] = true;
+            } else {
+                attackedByBlackBoard[currentX - i][currentY + i] = true;
+            }
+            if (board[currentX - i][currentY + i].exists == false) {
+                availableMoves[currentX - i][currentY + i] = true;
                 i++;
-            } else if (this.color != board[currentY - i][currentX + i].color) {
-                availableStrikes[currentY - i][currentX + i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - i][currentX + i] = true;
-                } else {
-                    attackedByBlackBoard[currentY - i][currentX + i] = true;
-                }
+            } else if (this.color != board[currentX - i][currentY + i].color) {
+                availableStrikes[currentX - i][currentY + i] = true;
                 break;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - i][currentX + i] = true;
-                } else {
-                    attackedByBlackBoard[currentY - i][currentX + i] = true;
-                }
                 break;
             }
         }
         i = 1;
-        while (currentY + i < board.length && currentX - i >= 0) {
-            if (board[currentY + i][currentX - i].exists == false) {
-                availableMoves[currentY + i][currentX - i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + i][currentX - i] = true;
-                } else {
-                    attackedByBlackBoard[currentY + i][currentX - i] = true;
-                }
+        while (currentX + i < board.length && currentY - i >= 0) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX + i][currentY - i] = true;
+            } else {
+                attackedByBlackBoard[currentX + i][currentY - i] = true;
+            }
+            if (board[currentX + i][currentY - i].exists == false) {
+                availableMoves[currentX + i][currentY - i] = true;
                 i++;
-            } else if (this.color != board[currentY + i][currentX - i].color) {
-                availableStrikes[currentY + i][currentX - i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + i][currentX - i] = true;
-                } else {
-                    attackedByBlackBoard[currentY + i][currentX - i] = true;
-                }
+            } else if (this.color != board[currentX + i][currentY - i].color) {
+                availableStrikes[currentX + i][currentY - i] = true;
                 break;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY + i][currentX - i] = true;
-                } else {
-                    attackedByBlackBoard[currentY + i][currentX - i] = true;
-                }
                 break;
             }
         }
         i = 1;
-        while (currentY - i >= 0 && currentX - i >= 0) {
-            if (board[currentY - i][currentX - i].exists == false) {
-                availableMoves[currentY - i][currentX - i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - i][currentX - i] = true;
-                } else {
-                    attackedByBlackBoard[currentY - i][currentX - i] = true;
-                }
+        while (currentX - i >= 0 && currentY - i >= 0) {
+            if (this.color == true) {
+                attackedByWhiteBoard[currentX - i][currentY - i] = true;
+            } else {
+                attackedByBlackBoard[currentX - i][currentY - i] = true;
+            }
+            if (board[currentX - i][currentY - i].exists == false) {
+                availableMoves[currentX - i][currentY - i] = true;
                 i++;
-            } else if (this.color != board[currentY - i][currentX - i].color) {
-                availableStrikes[currentY - i][currentX - i] = true;
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - i][currentX - i] = true;
-                } else {
-                    attackedByBlackBoard[currentY - i][currentX - i] = true;
-                }
+            } else if (this.color != board[currentX - i][currentY - i].color) {
+                availableStrikes[currentX - i][currentY - i] = true;
                 break;
             } else {
-                if (this.color == true) {
-                    attackedByWhiteBoard[currentY - i][currentX - i] = true;
-                } else {
-                    attackedByBlackBoard[currentY - i][currentX - i] = true;
-                }
                 break;
             }
         }
