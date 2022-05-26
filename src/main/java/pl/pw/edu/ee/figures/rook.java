@@ -1,13 +1,27 @@
 package pl.pw.edu.ee.figures;
 
-public class rook extends figure {
-    {
+public class Rook extends Figure {
+    public Rook(){
         this.value = 5;
+        this.type = "rook";
+    }
+
+    public Rook(Figure rook) {
+        this.availableCastle = rook.availableCastle;
+        this.availableMoves = rook.availableMoves;
+        this.availableStrikes = rook.availableStrikes;
+        this.color = rook.color;
+        this.defaultSettings = rook.defaultSettings;
+        this.exists = rook.exists;
+        this.hasBeenMoved = rook.hasBeenMoved;
+        this.legalMovesStrikes = rook.legalMovesStrikes;
+        this.type = rook.type;
+        this.value = rook.value;
     }
 
     @Override
-    public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
-            boolean[][] attackedByBlackBoard) {
+    public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
 
         int i;
         i = 1;

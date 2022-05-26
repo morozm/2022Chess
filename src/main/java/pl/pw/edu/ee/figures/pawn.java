@@ -1,13 +1,29 @@
 package pl.pw.edu.ee.figures;
 
-public class pawn extends figure {
-    {
+import javax.swing.Icon;
+
+public class Pawn extends Figure {
+    public Pawn() {
         this.value = 1;
+        this.type = "pawn";
+    }
+
+    public Pawn(Figure pawn) {
+        this.availableCastle = pawn.availableCastle;
+        this.availableMoves = pawn.availableMoves;
+        this.availableStrikes = pawn.availableStrikes;
+        this.color = pawn.color;
+        this.defaultSettings = pawn.defaultSettings;
+        this.exists = pawn.exists;
+        this.hasBeenMoved = pawn.hasBeenMoved;
+        this.legalMovesStrikes = pawn.legalMovesStrikes;
+        this.type = pawn.type;
+        this.value = pawn.value;
     }
 
     @Override
-    public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
-            boolean[][] attackedByBlackBoard) {
+    public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
 
         if (board[currentX][currentY].color == false) {
             if (hasBeenMoved == false) {
@@ -65,23 +81,19 @@ public class pawn extends figure {
                 }
             }
             if (currentY - 1 >= 0 && currentX + 1 <= board.length - 1) {
-                attackedByBlackBoard[currentX + 1][currentY - 1] = true;
+                attackedByWhiteBoard[currentX + 1][currentY - 1] = true;
                 if (board[currentX + 1][currentY - 1].exists == true
                         && board[currentX + 1][currentY - 1].color == false) {
                     availableStrikes[currentX + 1][currentY - 1] = true;
                 }
             }
             if (currentY - 1 >= 0 && currentX - 1 >= 0) {
-                attackedByBlackBoard[currentX - 1][currentY - 1] = true;
+                attackedByWhiteBoard[currentX - 1][currentY - 1] = true;
                 if (board[currentX - 1][currentY - 1].exists == true
                         && board[currentX - 1][currentY - 1].color == false) {
                     availableStrikes[currentX - 1][currentY - 1] = true;
                 }
             }
         }
-    }
-
-    private void promote(int currentY, int currentX) {
-
     }
 }

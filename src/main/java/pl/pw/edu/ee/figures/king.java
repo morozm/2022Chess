@@ -1,13 +1,27 @@
 package pl.pw.edu.ee.figures;
 
-public class king extends figure {
-    {
+public class King extends Figure {
+    public King(){
         this.value = 0;
+        this.type = "king";
+    }
+
+    public King(Figure king) {
+        this.availableCastle = king.availableCastle;
+        this.availableMoves = king.availableMoves;
+        this.availableStrikes = king.availableStrikes;
+        this.color = king.color;
+        this.defaultSettings = king.defaultSettings;
+        this.exists = king.exists;
+        this.hasBeenMoved = king.hasBeenMoved;
+        this.legalMovesStrikes = king.legalMovesStrikes;
+        this.type = king.type;
+        this.value = king.value;
     }
 
     @Override
-    public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
-            boolean[][] attackedByBlackBoard) {
+    public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
 
         if (currentX + 1 < board.length) {
             if (this.color == true) {
@@ -113,8 +127,12 @@ public class king extends figure {
                 availableStrikes[currentX + 1][currentY - 1] = true;
             }
         }
+    }
 
-        /* Castling only for 8x8 standard and */
+    @Override
+    public void setAvailableCastles(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
+        /* Castling only for 8x8 standard and 960 */
         int i = 0;
         if (this.color == true) {
             i = 0;
@@ -126,7 +144,8 @@ public class king extends figure {
                             break;
                         }
                     }
-                    availableCastle[7][7] = true;
+                    availableCastle[currentX + i][currentY] = true;
+                    break;
                 }
                 if ((board[currentX + i][currentY].value != 5 && board[currentX + i][currentY].value != 0)
                         || attackedByBlackBoard[currentX + i][currentY] == true) {
@@ -143,7 +162,8 @@ public class king extends figure {
                             break;
                         }
                     }
-                    availableCastle[0][7] = true;
+                    availableCastle[currentX - i][currentY] = true;
+                    break;
                 }
                 if ((board[currentX - i][currentY].value != 5 && board[currentX - i][currentY].value != 0)
                         || attackedByBlackBoard[currentX - i][currentY] == true) {
@@ -162,7 +182,8 @@ public class king extends figure {
                             break;
                         }
                     }
-                    availableCastle[7][0] = true;
+                    availableCastle[currentX + i][currentY] = true;
+                    break;
                 }
                 if ((board[currentX + i][currentY].value != 5 && board[currentX + i][currentY].value != 0)
                         || attackedByWhiteBoard[currentX + i][currentY] == true) {
@@ -179,7 +200,8 @@ public class king extends figure {
                             break;
                         }
                     }
-                    availableCastle[0][0] = true;
+                    availableCastle[currentX - i][currentY] = true;
+                    break;
                 }
                 if ((board[currentX - i][currentY].value != 5 && board[currentX - i][currentY].value != 0)
                         || attackedByWhiteBoard[currentX - i][currentY] == true) {

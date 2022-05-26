@@ -1,13 +1,27 @@
 package pl.pw.edu.ee.figures;
 
-public class knight extends figure {
-    {
+public class Knight extends Figure {
+    public Knight(){
         this.value = 3;
+        this.type = "knight";
+    }
+
+    public Knight(Figure knight) {
+        this.availableCastle = knight.availableCastle;
+        this.availableMoves = knight.availableMoves;
+        this.availableStrikes = knight.availableStrikes;
+        this.color = knight.color;
+        this.defaultSettings = knight.defaultSettings;
+        this.exists = knight.exists;
+        this.hasBeenMoved = knight.hasBeenMoved;
+        this.legalMovesStrikes = knight.legalMovesStrikes;
+        this.type = knight.type;
+        this.value = knight.value;
     }
 
     @Override
-    public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
-            boolean[][] attackedByBlackBoard) {
+    public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
 
         if (currentX + 1 < board.length && currentY + 2 < board[0].length) {
             if (this.color == true) {

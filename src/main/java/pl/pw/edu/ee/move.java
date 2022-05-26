@@ -1,8 +1,8 @@
 package pl.pw.edu.ee;
 
-import pl.pw.edu.ee.figures.figure;
+import pl.pw.edu.ee.figures.Figure;
 
-public class move {
+public class Move {
     // public void moveFigure(figure[][] board, int fromY, int fromX, int toY, int toX){
     //     settings defaultSettings = new settings();
     //     board[toY][toX] = board[fromX][fromY];

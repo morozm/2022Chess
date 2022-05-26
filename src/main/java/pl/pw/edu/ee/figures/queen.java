@@ -1,13 +1,27 @@
 package pl.pw.edu.ee.figures;
 
-public class queen extends figure {
-    {
+public class Queen extends Figure {
+    public Queen(){
         this.value = 9;
+        this.type = "queen";
+    }
+
+    public Queen(Figure queen) {
+        this.availableCastle = queen.availableCastle;
+        this.availableMoves = queen.availableMoves;
+        this.availableStrikes = queen.availableStrikes;
+        this.color = queen.color;
+        this.defaultSettings = queen.defaultSettings;
+        this.exists = queen.exists;
+        this.hasBeenMoved = queen.hasBeenMoved;
+        this.legalMovesStrikes = queen.legalMovesStrikes;
+        this.type = queen.type;
+        this.value = queen.value;
     }
 
     @Override
-    public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
-            boolean[][] attackedByBlackBoard) {
+    public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
 
         int i;
         i = 1;

@@ -1,13 +1,27 @@
 package pl.pw.edu.ee.figures;
 
-public class bishop extends figure {
-    {
+public class Bishop extends Figure {
+    public Bishop() {
         this.value = 3;
+        this.type = "bishop";
+    }
+
+    public Bishop(Figure bishop) {
+        this.availableCastle = bishop.availableCastle;
+        this.availableMoves = bishop.availableMoves;
+        this.availableStrikes = bishop.availableStrikes;
+        this.color = bishop.color;
+        this.defaultSettings = bishop.defaultSettings;
+        this.exists = bishop.exists;
+        this.hasBeenMoved = bishop.hasBeenMoved;
+        this.legalMovesStrikes = bishop.legalMovesStrikes;
+        this.type = bishop.type;
+        this.value = bishop.value;
     }
 
     @Override
-    public void setAvailableMoves(figure[][] board, boolean[][] attackedByWhiteBoard,
-            boolean[][] attackedByBlackBoard) {
+    public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
+            boolean[][] attackedByBlackBoard, int currentX, int currentY) {
 
         int i;
         i = 1;

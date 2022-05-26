@@ -1,10 +1,10 @@
 package pl.pw.edu.ee;
 
-public class main {
+public class Main {
 
 	public static void main(String[] args) {
 
-		chess chess = new chess();
+		Chess chess = new Chess();
 		
 	}
 }
