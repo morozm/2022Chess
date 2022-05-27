@@ -2,6 +2,7 @@ package pl.pw.edu.ee;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -40,11 +41,15 @@ public class Chess implements ActionListener {
 	boolean whiteTurn = true;
 	int turnNumber = 1;
 	JFrame frame = new JFrame();
-	JPanel title_panel = new JPanel();
-	JPanel button_panel = new JPanel();
-	JLabel textfield = new JLabel();
-	Border border = BorderFactory.createLineBorder(new Color(222, 155, 53), 3);
+	JPanel titlePanel = new JPanel();
+	JPanel buttonPanel = new JPanel();
+	JPanel sidePanel = new JPanel();
+	JPanel bottomPanel = new JPanel();
+	JPanel sidePiecesPanel = new JPanel();
+	JLabel textLabel = new JLabel();
+	Border border = BorderFactory.createLineBorder(new Color(222, 155, 53), 4);
 	JButton[][] buttons = new JButton[defaultSettings.boardLength][defaultSettings.boardWidth];
+	JButton[] sideButtons = new JButton[4];
 	Figure[][] mainBoard = new Figure[defaultSettings.boardLength][defaultSettings.boardWidth];
 	Figure[][] testBoard = new Figure[defaultSettings.boardLength][defaultSettings.boardWidth];
 	String[][][] savedGame = new String[1000][defaultSettings.boardLength][defaultSettings.boardWidth];
@@ -72,47 +77,79 @@ public class Chess implements ActionListener {
 
 	Chess() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1000, 1000);
+		frame.setSize(1200, 930);
 		frame.setTitle("Best Chess Ever Made");
 		frame.setResizable(false); // cant resize window
 		frame.setIconImage(piecesIcons[10].getImage());
 		frame.getContentPane().setBackground(new Color(50, 50, 50)); // ???
 		frame.setLayout(new BorderLayout());
-		// frame.setLayout(null);
 		frame.setVisible(true);
 
-		textfield.setBackground(new Color(12, 15, 18));
-		textfield.setForeground(new Color(222, 155, 53));
-		textfield.setFont(new Font("Counter-Strike Regular", Font.PLAIN, 50));
-		textfield.setHorizontalAlignment(JLabel.CENTER);
-		textfield.setText("Wie Pan Co To Znaczy Trappin?");
-		textfield.setOpaque(true);
-		textfield.setBorder(border);
+		textLabel.setBackground(new Color(12, 15, 18));
+		textLabel.setForeground(new Color(222, 155, 53));
+		textLabel.setFont(new Font("Counter-Strike Regular", Font.PLAIN, 50));
+		textLabel.setHorizontalAlignment(JLabel.CENTER);
+		textLabel.setText("Wie Pan Co To Znaczy Trappin?");
+		textLabel.setOpaque(true);
+		textLabel.setBorder(border);
 
-		title_panel.setLayout(new BorderLayout());
-		title_panel.setBounds(0, 0, 900, 100);
+		titlePanel.setLayout(new BorderLayout());
+		titlePanel.setPreferredSize(new Dimension(1200, 82));
 
-		button_panel.setLayout(new GridLayout(defaultSettings.boardWidth, defaultSettings.boardLength));
-		button_panel.setBackground(new Color(150, 150, 150));
+		sidePanel.setLayout(new BorderLayout());
+		sidePanel.setPreferredSize(new Dimension(400, 800));
+		sidePanel.setBorder(border);
+		sidePanel.setBackground(new Color(12, 15, 18));
+
+		bottomPanel.setLayout(new BorderLayout());
+		bottomPanel.setPreferredSize(new Dimension(800, 800));
+		bottomPanel.setBorder(border);
+		bottomPanel.setBackground(new Color(12, 15, 18));
+
+		sidePiecesPanel.setLayout(new GridLayout(1,4));
+		sidePiecesPanel.setPreferredSize(new Dimension(400, 100));
+		sidePiecesPanel.setBackground(new Color(12, 15, 18));
+
+		for (int i = 0; i < 4; i++) {
+			sideButtons [i]= new JButton();
+			sidePiecesPanel.add(sideButtons[i]);
+			sideButtons[i].setFocusable(false);
+			sideButtons[i].addActionListener(this);
+			if (i % 2 == 1) {
+				sideButtons[i].setBackground(defaultSettings.tileColor1);
+			} else
+				sideButtons[i].setBackground(defaultSettings.tileColor2);
+		}
+
+		buttonPanel.setLayout(new GridLayout(defaultSettings.boardWidth, defaultSettings.boardLength));
+		buttonPanel.setBackground(new Color(12, 15, 18));
+		buttonPanel.setPreferredSize(new Dimension(800, 800));
 
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				buttons[j][i] = new JButton();
-				button_panel.add(buttons[j][i]);
-				buttons[j][i].setFont(new Font("Cheri Liney", Font.BOLD, 30));
-				buttons[j][i].setBackground(defaultColor);
+			 	buttons[j][i] = new JButton();
+				buttonPanel.add(buttons[j][i]);
+				// buttons[j][i].setFont(new Font("Cheri Liney", Font.BOLD, 30));
+				// buttons[j][i].setBackground(defaultColor);
 				buttons[j][i].setFocusable(false);
 				buttons[j][i].addActionListener(this);
 				mainBoard[j][i] = new Figure() {
 				};
 				testBoard[j][i] = new Figure() {
 				};
+				if ((i + j) % 2 == 0) {
+					buttons[j][i].setBackground(defaultSettings.tileColor1);
+				} else
+					buttons[j][i].setBackground(defaultSettings.tileColor2);
 			}
 		}
 
-		title_panel.add(textfield);
-		frame.add(title_panel, BorderLayout.NORTH);
-		frame.add(button_panel);
+		titlePanel.add(textLabel);
+		sidePanel.add(sidePiecesPanel, BorderLayout.SOUTH);
+		bottomPanel.add(buttonPanel, BorderLayout.SOUTH );
+		frame.add(titlePanel, BorderLayout.NORTH);
+		frame.add(sidePanel, BorderLayout.EAST);
+		frame.add(bottomPanel);
 
 		// makeSound("bombsiteB");
 		loadPosition();
@@ -166,36 +203,36 @@ public class Chess implements ActionListener {
 						buttonIsSelected = true;
 						selectedButtonX = j;
 						selectedButtonY = i;
-						buttons[j][i].setBackground(new Color(230, 230, 230));
+						buttons[j][i].setBackground(defaultSettings.selectColor);
 					}
 					if (mainBoard[selectedButtonX][selectedButtonY].color != whiteTurn
 							&& mainBoard[selectedButtonX][selectedButtonY].exists == true && buttonIsSelected == true) {
-						textfield.setText("Not your piece");
+						textLabel.setText("Not your piece");
 					} else if (mainBoard[selectedButtonX][selectedButtonY].exists == false
 							&& buttonIsSelected == true) {
-						textfield.setText("Nothing here");
+						textLabel.setText("Nothing here");
 					} else if (buttonIsSelected == false) {
 						if (whiteTurn == true) {
-							textfield.setText("White on move");
+							textLabel.setText("White on move");
 						} else {
-							textfield.setText("Black on move");
+							textLabel.setText("Black on move");
 						}
 						// textfield.setText("Click something");
 					} else if (mainBoard[selectedButtonX][selectedButtonY].color == whiteTurn
 							&& mainBoard[selectedButtonX][selectedButtonY].exists == true && buttonIsSelected == true) {
-						textfield.setText("OK but where?");
+						textLabel.setText("OK but where?");
 						for (int k = 0; k < defaultSettings.boardWidth; k++) {
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
 								if (mainBoard[selectedButtonX][selectedButtonY].availableMoves[l][k] == true
 										&& mainBoard[selectedButtonX][selectedButtonY].legalMovesStrikes[l][k] == true) {
-									buttons[l][k].setBackground(new Color(200, 255, 200));
+									buttons[l][k].setBackground(defaultSettings.moveColor);
 								}
 								if (mainBoard[selectedButtonX][selectedButtonY].availableStrikes[l][k] == true
 										&& mainBoard[selectedButtonX][selectedButtonY].legalMovesStrikes[l][k] == true) {
-									buttons[l][k].setBackground(new Color(255, 200, 200));
+									buttons[l][k].setBackground(defaultSettings.attackColor);
 								}
 								if (mainBoard[selectedButtonX][selectedButtonY].availableCastle[l][k] == true) {
-									buttons[l][k].setBackground(new Color(200, 200, 255));
+									buttons[l][k].setBackground(defaultSettings.castleColor);
 								}
 							}
 						}
@@ -238,7 +275,12 @@ public class Chess implements ActionListener {
 				}
 				// mainBoard[j][i].currentX = j;
 				// mainBoard[j][i].currentY = i;
-				savedGame[turnNumber] = defaultSettings.defaultPosition;
+			}
+		}
+		savedGame[turnNumber] = defaultSettings.defaultPosition;
+		for (int m = 0; m < mainBoard.length; m++) {
+			for (int n = 0; n < mainBoard.length; n++) {
+				cloneFigure(m, n, testBoard, mainBoard);
 			}
 		}
 	}
@@ -274,26 +316,18 @@ public class Chess implements ActionListener {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
 				for (int k = 0; k < defaultSettings.boardWidth; k++) {
 					for (int l = 0; l < defaultSettings.boardLength; l++) {
-						// figure[][] testBoard = new
-						// figure[defaultSettings.boardLength][defaultSettings.boardWidth];
-
-						if (j == 3 && i == 6 && l == 2 && k == 5) {
-							System.out.println("test");
-						}
 						mainBoard[j][i].legalMovesStrikes[l][k] = false;
 						if ((mainBoard[j][i].availableMoves[l][k] == true
 								|| mainBoard[j][i].availableStrikes[l][k] == true)
 								&& (mainBoard[j][i].color == whiteTurn)) {
-							for (int m = 0; m < mainBoard.length; m++) {
-								for (int n = 0; n < mainBoard.length; n++) {
-									cloneFigure(m, n, testBoard, mainBoard);
-								}
-							}
+							boolean hasBeenMoved = testBoard[j][i].hasBeenMoved;
 							moveFigure(j, i, l, k, testBoard);
 							setAvailableMovesForBoard(testBoard, testDefaultdBoard);
 							if (checkCheck(testBoard, testDefaultdBoard, false) == false) {
 								mainBoard[j][i].legalMovesStrikes[l][k] = true;
 							}
+							undoMoveFigure(l, k, j, i, testBoard, hasBeenMoved);
+							mainBoard[j][i].legalMovesStrikes[l][k] = true;
 						}
 					}
 				}
@@ -340,14 +374,16 @@ public class Chess implements ActionListener {
 		Figure tmpFigure = board[fromX][fromY];
 		board[fromX][fromY] = new Figure() {
 		};
-		// board[fromX][fromY].availableMoves = new
-		// boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-		// board[fromX][fromY].availableStrikes = new
-		// boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
 		board[toX][toY] = tmpFigure;
 		board[toX][toY].hasBeenMoved = true;
-		// board[toX][toY].currentX = toX;
-		// board[toX][toY].currentY = toY;
+	}
+
+	public void undoMoveFigure(int fromX, int fromY, int toX, int toY, Figure[][] board, boolean hasBeenMoved) {
+		Figure tmpFigure = board[fromX][fromY];
+		board[fromX][fromY] = new Figure() {
+		};
+		board[toX][toY] = tmpFigure;
+		board[toX][toY].hasBeenMoved = hasBeenMoved;
 	}
 
 	public void moveCastle(int kingX, int kingY, int rookX, int rookY, Figure[][] board) {
@@ -365,8 +401,9 @@ public class Chess implements ActionListener {
 				|| (currentY == 0 && board[currentX][currentY].color == true)) {
 			promote(board, currentX, currentY);
 			changeGUI(currentX, currentY);
-			// board[currentX][currentY].setAvailableMoves(board, attackedByWhiteBoard, attackedByBlackBoard, currentX,
-			// 		currentY);
+			// board[currentX][currentY].setAvailableMoves(board, attackedByWhiteBoard,
+			// attackedByBlackBoard, currentX,
+			// currentY);
 		}
 	}
 
@@ -396,15 +433,19 @@ public class Chess implements ActionListener {
 
 	public void turnOnLastMove() {
 		if (turnNumber != 1 || whiteTurn != true) {
-			buttons[lastMove[0]][lastMove[1]].setBackground(new Color(255, 255, 200));
-			buttons[lastMove[2]][lastMove[3]].setBackground(new Color(255, 255, 200));
+			buttons[lastMove[0]][lastMove[1]].setBackground(defaultSettings.lastMoveColor);
+			buttons[lastMove[2]][lastMove[3]].setBackground(defaultSettings.lastMoveColor);
 		}
 	}
 
 	public void turnOffAllButtons() {
-		for (int k = 0; k < defaultSettings.boardWidth; k++) {
-			for (int l = 0; l < defaultSettings.boardLength; l++) {
-				buttons[l][k].setBackground(defaultColor);
+		for (int i = 0; i < defaultSettings.boardWidth; i++) {
+			for (int j = 0; j < defaultSettings.boardLength; j++) {
+				// buttons[l][k].setBackground(defaultColor);
+				if ((i + j) % 2 == 0) {
+					buttons[j][i].setBackground(defaultSettings.tileColor1);
+				} else
+					buttons[j][i].setBackground(defaultSettings.tileColor2);
 			}
 		}
 	}
@@ -445,9 +486,9 @@ public class Chess implements ActionListener {
 			e.printStackTrace();
 		}
 		if (random.nextInt(2) == 0) {
-			textfield.setText("White starts");
+			textLabel.setText("White starts");
 		} else {
-			textfield.setText("Black starts (Just Kidding)");
+			textLabel.setText("Black starts (Just Kidding)");
 		}
 	}
 

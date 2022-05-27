@@ -1,11 +1,19 @@
 package pl.pw.edu.ee;
 
+import java.awt.Color;
+
 public class Settings {
-        public int boardLength = 8; // a-h dont set for more than 140
+        public int boardLength = 8; // a-h
         public int boardWidth = 8; // 1-8
-        String tilecolor1 = "Green";
-        String tilecolor2 = "White";
         boolean whiteStartsGame = true;
+        Color tileColor1 = new Color(204, 186, 124);
+        Color tileColor2 = new Color(65, 58, 39);
+        Color attackColor = new Color(255, 100, 100);
+        Color moveColor = new Color(100, 255, 100);
+        Color selectColor = new Color(50, 50, 50);
+        Color castleColor = new Color(100, 100, 255);
+        Color lastMoveColor = new Color(255, 255, 100);
+        
         String[][] defaultPosition1 = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
