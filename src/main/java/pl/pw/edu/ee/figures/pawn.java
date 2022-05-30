@@ -1,7 +1,5 @@
 package pl.pw.edu.ee.figures;
 
-import javax.swing.Icon;
-
 public class Pawn extends Figure {
     public Pawn() {
         this.value = 1;

@@ -3,13 +3,11 @@ package pl.pw.edu.ee;
 import pl.pw.edu.ee.figures.Figure;
 
 public class Move {
-    // public void moveFigure(figure[][] board, int fromY, int fromX, int toY, int toX){
-    //     settings defaultSettings = new settings();
+    // public void moveFigure(Figure[][] board, int fromY, int fromX, int toY, int toX){
+    //     Settings defaultSettings = new Settings();
     //     board[toY][toX] = board[fromX][fromY];
     //     board[toY][toX].hasBeenMoved = true;
-    //     board[toY][toX].currentY = toY;
-    //     board[toY][toX].currentX = toX;
-    //     board[fromX][fromY] = new figure() {
+    //     board[fromX][fromY] = new Figure() {
     //     };
     //     board[fromX][fromY].availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
 	// 	board[fromX][fromY].availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];

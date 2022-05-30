@@ -1,20 +1,27 @@
 package pl.pw.edu.ee;
 
 import java.awt.Color;
+import java.awt.Font;
+//import java.lang.Math;
 
 public class Settings {
         public int boardLength = 8; // a-h
         public int boardWidth = 8; // 1-8
         boolean whiteStartsGame = true;
+        Color mainColor1 = new Color(222, 155, 53); // orange
+        Color mainColor2 = new Color(12, 15, 18); // black
         Color tileColor1 = new Color(204, 186, 124);
         Color tileColor2 = new Color(65, 58, 39);
-        Color attackColor = new Color(255, 100, 100);
-        Color moveColor = new Color(100, 255, 100);
-        Color selectColor = new Color(50, 50, 50);
-        Color castleColor = new Color(100, 100, 255);
-        Color lastMoveColor = new Color(255, 255, 100);
-        
-        String[][] defaultPosition1 = {
+        Color attackColor = new Color(255, 100, 100); // red
+        Color moveColor = new Color(100, 255, 100); // green
+        Color selectColor = new Color(222, 155, 53);
+        Color castleColor = new Color(100, 100, 255); // blue
+        Color lastMoveColor = new Color(255, 255, 100); // yellow
+
+        Font font1 = new Font("Counter-Strike Regular", Font.PLAIN, 50);
+        Font font2 = new Font("Guardians", Font.BOLD, (int) (400 / (Math.pow(Math.max(boardLength, boardWidth), 1.5))));
+
+        String[][] defaultPosition = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -34,7 +41,7 @@ public class Settings {
                         { "  ", "wP", "  ", "wB", "  ", "wQ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }
         };
-        String[][] defaultPosition = {
+        String[][] defaultPositio3 = {
                         { "bR", "  ", "  ", "  ", "bK", "  ", "  ", "bR" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "bN" },
@@ -55,7 +62,7 @@ public class Settings {
                         { "  ", "wR", "wR", "wR", "  ", "wR", "wR", "wR" }
         };
         String[][] defaultPosition5 = {
-                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "bK" },
                         { "  ", "  ", "  ", "wP", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -71,10 +78,9 @@ public class Settings {
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-                        { "  ", "  ", "  ", "  ", "  ", "  ", "bK", "  " },
-                        { "  ", "wQ", "  ", "  ", "  ", "  ", "  ", "  " }
+                        { "  ", "wQ", "  ", "  ", "  ", "  ", "bK", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }
         };
-
         String[][] defaultPosition7 = {
                         { "wQ", "  ", "bB", "  ", "  ", "bR", "bK", "  " },
                         { "bP", "  ", "bP", "bP", "  ", "  ", "bP", "bP" },
@@ -85,8 +91,21 @@ public class Settings {
                         { "wP", "wP", "  ", "wK", "  ", "  ", "bQ", "  " },
                         { "wR", "  ", "wB", "  ", "  ", "  ", "  ", "  " }
         };
-
         String[][] defaultPosition8 = {
+                        { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
+                        { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
+                        { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
+                        { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
+                        { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" }
+        };
+        String[][] defaultPosition9 = {
                         { "bK", "  ", "  " },
                         { "  ", "  ", "  " },
                         { "  ", "wQ", "  " }
