@@ -34,7 +34,7 @@ public class Chess implements ActionListener {
 
 	Settings defaultSettings = new Settings();
 	Board defaultBoard = new Board();
-	Board testDefaultdBoard = new Board();
+	// Board testDefaultdBoard = new Board();
 	// move defaultMove = new move();
 
 	Random random = new Random();
@@ -106,12 +106,12 @@ public class Chess implements ActionListener {
 		bottomPanel.setBorder(border);
 		bottomPanel.setBackground(new Color(12, 15, 18));
 
-		sidePiecesPanel.setLayout(new GridLayout(1,4));
+		sidePiecesPanel.setLayout(new GridLayout(1, 4));
 		sidePiecesPanel.setPreferredSize(new Dimension(400, 100));
 		sidePiecesPanel.setBackground(new Color(12, 15, 18));
 
 		for (int i = 0; i < 4; i++) {
-			sideButtons [i]= new JButton();
+			sideButtons[i] = new JButton();
 			sidePiecesPanel.add(sideButtons[i]);
 			sideButtons[i].setFocusable(false);
 			sideButtons[i].addActionListener(this);
@@ -127,7 +127,7 @@ public class Chess implements ActionListener {
 
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-			 	buttons[j][i] = new JButton();
+				buttons[j][i] = new JButton();
 				buttonPanel.add(buttons[j][i]);
 				// buttons[j][i].setFont(new Font("Cheri Liney", Font.BOLD, 30));
 				// buttons[j][i].setBackground(defaultColor);
@@ -141,12 +141,25 @@ public class Chess implements ActionListener {
 					buttons[j][i].setBackground(defaultSettings.tileColor1);
 				} else
 					buttons[j][i].setBackground(defaultSettings.tileColor2);
+				if (j == 0) {
+					// buttons[j][i].setText(Integer.toString(defaultSettings.boardWidth - i));
+					JLabel tmpLabel = new JLabel();
+					tmpLabel.setText(Integer.toString(defaultSettings.boardWidth - i));
+					// tmpLabel.setHorizontalAlignment(JLabel.CENTER);
+					// tmpLabel.setHorizontalAlignment(JLabel.CENTER);
+					buttons[j][i].add(tmpLabel, BorderLayout.PAGE_START);
+				}
+				if (i == defaultSettings.boardLength - 1) {
+					buttons[j][i].setText(Integer.toString(j + 1));
+					// buttons[j][i].setHorizontalAlignment(JLabel.RIGHT);
+					// buttons[j][i].setVerticalAlignment(JLabel.SOUTH);
+				}
 			}
 		}
 
 		titlePanel.add(textLabel);
 		sidePanel.add(sidePiecesPanel, BorderLayout.SOUTH);
-		bottomPanel.add(buttonPanel, BorderLayout.SOUTH );
+		bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
 		frame.add(titlePanel, BorderLayout.NORTH);
 		frame.add(sidePanel, BorderLayout.EAST);
 		frame.add(bottomPanel);
@@ -177,11 +190,13 @@ public class Chess implements ActionListener {
 							&& (mainBoard[selectedButtonX][selectedButtonY].color == whiteTurn)) {
 						if (mainBoard[selectedButtonX][selectedButtonY].availableCastle[j][i] == true) {
 							moveCastle(selectedButtonX, selectedButtonY, j, i, mainBoard);
+							moveCastle(selectedButtonX, selectedButtonY, j, i, testBoard);
 							moveGUICastle(selectedButtonX, selectedButtonY, j, i);
 							saveLastMove(selectedButtonX, selectedButtonY, j, i);
 							turnOnLastMove();
 						} else {
 							moveFigure(selectedButtonX, selectedButtonY, j, i, mainBoard);
+							moveFigure(selectedButtonX, selectedButtonY, j, i, testBoard);
 							moveGUI(selectedButtonX, selectedButtonY, j, i);
 							checkPromotion(j, i, mainBoard);
 							saveLastMove(selectedButtonX, selectedButtonY, j, i);
@@ -321,13 +336,17 @@ public class Chess implements ActionListener {
 								|| mainBoard[j][i].availableStrikes[l][k] == true)
 								&& (mainBoard[j][i].color == whiteTurn)) {
 							boolean hasBeenMoved = testBoard[j][i].hasBeenMoved;
+							Figure tmpFigure = testBoard[l][k];
+							// for (int m = 0; m < mainBoard.length; m++) {
+							// 	for (int n = 0; n < mainBoard.length; n++) {
+							// 		cloneFigure(m, n, testBoard, mainBoard);
+							// 	}
+							// }
 							moveFigure(j, i, l, k, testBoard);
-							setAvailableMovesForBoard(testBoard, testDefaultdBoard);
-							if (checkCheck(testBoard, testDefaultdBoard, false) == false) {
+							if (checkCheck(testBoard, false) == false) {
 								mainBoard[j][i].legalMovesStrikes[l][k] = true;
 							}
-							undoMoveFigure(l, k, j, i, testBoard, hasBeenMoved);
-							mainBoard[j][i].legalMovesStrikes[l][k] = true;
+							undoMoveFigure(l, k, j, i, testBoard, hasBeenMoved, tmpFigure);
 						}
 					}
 				}
@@ -378,10 +397,9 @@ public class Chess implements ActionListener {
 		board[toX][toY].hasBeenMoved = true;
 	}
 
-	public void undoMoveFigure(int fromX, int fromY, int toX, int toY, Figure[][] board, boolean hasBeenMoved) {
+	public void undoMoveFigure(int fromX, int fromY, int toX, int toY, Figure[][] board, boolean hasBeenMoved, Figure strikeFigure) {
 		Figure tmpFigure = board[fromX][fromY];
-		board[fromX][fromY] = new Figure() {
-		};
+		board[fromX][fromY] = strikeFigure;
 		board[toX][toY] = tmpFigure;
 		board[toX][toY].hasBeenMoved = hasBeenMoved;
 	}
@@ -397,8 +415,10 @@ public class Chess implements ActionListener {
 	}
 
 	public void checkPromotion(int currentX, int currentY, Figure[][] board) {
-		if ((currentY == board[0].length - 1 && board[currentX][currentY].color == false)
-				|| (currentY == 0 && board[currentX][currentY].color == true)) {
+		if ((currentY == board[0].length - 1 && board[currentX][currentY].color == false
+				&& board[currentX][currentY].type == "pawn")
+				|| (currentY == 0 && board[currentX][currentY].color == true
+						&& board[currentX][currentY].type == "pawn")) {
 			promote(board, currentX, currentY);
 			changeGUI(currentX, currentY);
 			// board[currentX][currentY].setAvailableMoves(board, attackedByWhiteBoard,
@@ -470,6 +490,336 @@ public class Chess implements ActionListener {
 						if (attackedBoard.attackedByBlackBoard[j][i] == true) {
 							System.out.println("CHECK (by black)");
 							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean checkCheck(Figure[][] board, boolean enemy) {
+		if ((enemy == true && whiteTurn == true) || (enemy == false && whiteTurn == false)) {
+			for (int i = 0; i < defaultSettings.boardWidth; i++) {
+				for (int j = 0; j < defaultSettings.boardLength; j++) {
+					if (board[j][i].type.equals("king") && board[j][i].color == false) {
+						int k;
+						k = 1;
+						while (j + k < board.length && i + k < board[0].length) {
+							if (board[j + k][i + k].color == true
+									&& (board[j + k][i + k].type == "bishop" || board[j + k][i + k].type == "queen")) {
+								return true;
+							} else if (board[j + k][i + k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j + k < board.length && i - k >= 0) {
+							if (board[j + k][i - k].color == true
+									&& (board[j + k][i - k].type == "bishop" || board[j + k][i - k].type == "queen")) {
+								return true;
+							} else if (board[j + k][i - k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j - k >= 0 && i - k >= 0) {
+							if (board[j - k][i - k].color == true
+									&& (board[j - k][i - k].type == "bishop" || board[j - k][i - k].type == "queen")) {
+								return true;
+							} else if (board[j - k][i - k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j - k >= 0 && i + k < board[0].length) {
+							if (board[j - k][i + k].color == true
+									&& (board[j - k][i + k].type == "bishop" || board[j - k][i + k].type == "queen")) {
+								return true;
+							} else if (board[j - k][i + k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j + k < board.length) {
+							if (board[j + k][i].color == true
+									&& (board[j + k][i].type == "rook" || board[j + k][i].type == "queen")) {
+								return true;
+							} else if (board[j + k][i].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (i - k >= 0) {
+							if (board[j][i - k].color == true
+									&& (board[j][i - k].type == "rook" || board[j][i - k].type == "queen")) {
+								return true;
+							} else if (board[j][i - k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j - k >= 0) {
+							if (board[j - k][i].color == true
+									&& (board[j - k][i].type == "rook" || board[j - k][i].type == "queen")) {
+								return true;
+							} else if (board[j - k][i].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (i + k < board[0].length) {
+							if (board[j][i + k].color == true
+									&& (board[j][i + k].type == "rook" || board[j][i + k].type == "queen")) {
+								return true;
+							} else if (board[j][i + k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						if (j + 1 < board.length && i + 2 < board[0].length) {
+							if (board[j + 1][i + 2].type == "knight" && board[j + 1][i + 2].color == true)
+								return true;
+						}
+						if (j + 1 < board.length && i - 2 >= 0) {
+							if (board[j + 1][i - 2].type == "knight" && board[j + 1][i - 2].color == true)
+								return true;
+						}
+						if (j + 2 < board.length && i + 1 < board[0].length) {
+							if (board[j + 2][i + 1].type == "knight" && board[j + 2][i + 1].color == true)
+								return true;
+						}
+						if (j + 2 < board.length && i - 1 >= 0) {
+							if (board[j + 2][i - 1].type == "knight" && board[j + 2][i - 1].color == true)
+								return true;
+						}
+						if (j - 1 >= 0 && i + 2 < board[0].length) {
+							if (board[j - 1][i + 2].type == "knight" && board[j - 1][i + 2].color == true)
+								return true;
+						}
+						if (j - 1 >= 0 && i - 2 >= 0) {
+							if (board[j - 1][i - 2].type == "knight" && board[j - 1][i - 2].color == true)
+								return true;
+						}
+						if (j - 2 >= 0 && i + 1 < board[0].length) {
+							if (board[j - 2][i + 1].type == "knight" && board[j - 2][i + 1].color == true)
+								return true;
+						}
+						if (j - 2 >= 0 && i - 1 >= 0) {
+							if (board[j - 2][i - 1].type == "knight" && board[j - 2][i - 1].color == true)
+								return true;
+						}
+						if (j + 1 < board.length && i + 1 < board[0].length) {
+							if ((board[j + 1][i + 1].type == "king" || board[j + 1][i + 1].type == "pawn")
+									&& board[j + 1][i + 1].color == true)
+								return true;
+						}
+						if (j + 1 < board.length && i - 1 >= 0) {
+							if (board[j + 1][i - 1].type == "king" && board[j + 1][i - 1].color == true)
+								return true;
+						}
+						if (j - 1 >= 0 && i + 1 < board[0].length) {
+							if ((board[j - 1][i + 1].type == "king" || board[j - 1][i + 1].type == "pawn")
+									&& board[j - 1][i + 1].color == true)
+								return true;
+						}
+						if (j - 1 >= 0 && i - 1 >= 0) {
+							if (board[j - 1][i - 1].type == "king" && board[j - 1][i - 1].color == true)
+								return true;
+						}
+						if (j + 1 < board.length) {
+							if (board[j + 1][i].type == "king" && board[j + 1][i].color == true)
+								return true;
+						}
+						if (i - 1 >= 0) {
+							if (board[j][i - 1].type == "king" && board[j][i - 1].color == true)
+								return true;
+						}
+						if (i + 1 < board[0].length) {
+							if (board[j][i + 1].type == "king" && board[j][i + 1].color == true)
+								return true;
+						}
+						if (j - 1 >= 0) {
+							if (board[j - 1][i].type == "king" && board[j - 1][i].color == true)
+								return true;
+						}
+					}
+				}
+			}
+		}
+		if ((enemy == true && whiteTurn == false) || (enemy == false && whiteTurn == true)) {
+			for (int i = 0; i < defaultSettings.boardWidth; i++) {
+				for (int j = 0; j < defaultSettings.boardLength; j++) {
+					if (board[j][i].type.equals("king") && board[j][i].color == true) {
+						int k;
+						k = 1;
+						while (j + k < board.length && i + k < board[0].length) {
+							if (board[j + k][i + k].color == false
+									&& (board[j + k][i + k].type == "bishop" || board[j + k][i + k].type == "queen")) {
+								return true;
+							} else if (board[j + k][i + k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j + k < board.length && i - k >= 0) {
+							if (board[j + k][i - k].color == false
+									&& (board[j + k][i - k].type == "bishop" || board[j + k][i - k].type == "queen")) {
+								return true;
+							} else if (board[j + k][i - k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j - k >= 0 && i - k >= 0) {
+							if (board[j - k][i - k].color == false
+									&& (board[j - k][i - k].type == "bishop" || board[j - k][i - k].type == "queen")) {
+								return true;
+							} else if (board[j - k][i - k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j - k >= 0 && i + k < board[0].length) {
+							if (board[j - k][i + k].color == false
+									&& (board[j - k][i + k].type == "bishop" || board[j - k][i + k].type == "queen")) {
+								return true;
+							} else if (board[j - k][i + k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j + k < board.length) {
+							if (board[j + k][i].color == false
+									&& (board[j + k][i].type == "rook" || board[j + k][i].type == "queen")) {
+								return true;
+							} else if (board[j + k][i].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (i - k >= 0) {
+							if (board[j][i - k].color == false
+									&& (board[j][i - k].type == "rook" || board[j][i - k].type == "queen")) {
+								return true;
+							} else if (board[j][i - k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (j - k >= 0) {
+							if (board[j - k][i].color == false
+									&& (board[j - k][i].type == "rook" || board[j - k][i].type == "queen")) {
+								return true;
+							} else if (board[j - k][i].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						k = 1;
+						while (i + k < board[0].length) {
+							if (board[j][i + k].color == false
+									&& (board[j][i + k].type == "rook" || board[j][i + k].type == "queen")) {
+								return true;
+							} else if (board[j][i + k].exists == false) {
+								k++;
+							} else {
+								break;
+							}
+						}
+						if (j + 1 < board.length && i + 2 < board[0].length) {
+							if (board[j + 1][i + 2].type == "knight" && board[j + 1][i + 2].color == false)
+								return true;
+						}
+						if (j + 1 < board.length && i - 2 >= 0) {
+							if (board[j + 1][i - 2].type == "knight" && board[j + 1][i - 2].color == false)
+								return true;
+						}
+						if (j + 2 < board.length && i + 1 < board[0].length) {
+							if (board[j + 2][i + 1].type == "knight" && board[j + 2][i + 1].color == false)
+								return true;
+						}
+						if (j + 2 < board.length && i - 1 >= 0) {
+							if (board[j + 2][i - 1].type == "knight" && board[j + 2][i - 1].color == false)
+								return true;
+						}
+						if (j - 1 >= 0 && i + 2 < board[0].length) {
+							if (board[j - 1][i + 2].type == "knight" && board[j - 1][i + 2].color == false)
+								return true;
+						}
+						if (j - 1 >= 0 && i - 2 >= 0) {
+							if (board[j - 1][i - 2].type == "knight" && board[j - 1][i - 2].color == false)
+								return true;
+						}
+						if (j - 2 >= 0 && i + 1 < board[0].length) {
+							if (board[j - 2][i + 1].type == "knight" && board[j - 2][i + 1].color == false)
+								return true;
+						}
+						if (j - 2 >= 0 && i - 1 >= 0) {
+							if (board[j - 2][i - 1].type == "knight" && board[j - 2][i - 1].color == false)
+								return true;
+						}
+						if (j + 1 < board.length && i + 1 < board[0].length) {
+							if ((board[j + 1][i + 1].type == "king" || board[j + 1][i + 1].type == "pawn")
+									&& board[j + 1][i + 1].color == false)
+								return true;
+						}
+						if (j + 1 < board.length && i - 1 >= 0) {
+							if (board[j + 1][i - 1].type == "king" && board[j + 1][i - 1].color == false)
+								return true;
+						}
+						if (j - 1 >= 0 && i + 1 < board[0].length) {
+							if ((board[j - 1][i + 1].type == "king" || board[j - 1][i + 1].type == "pawn")
+									&& board[j - 1][i + 1].color == false)
+								return true;
+						}
+						if (j - 1 >= 0 && i - 1 >= 0) {
+							if (board[j - 1][i - 1].type == "king" && board[j - 1][i - 1].color == false)
+								return true;
+						}
+						if (j + 1 < board.length) {
+							if (board[j + 1][i].type == "king" && board[j + 1][i].color == false)
+								return true;
+						}
+						if (i - 1 >= 0) {
+							if (board[j][i - 1].type == "king" && board[j][i - 1].color == false)
+								return true;
+						}
+						if (i + 1 < board[0].length) {
+							if (board[j][i + 1].type == "king" && board[j][i + 1].color == false)
+								return true;
+						}
+						if (j - 1 >= 0) {
+							if (board[j - 1][i].type == "king" && board[j - 1][i].color == false)
+								return true;
 						}
 					}
 				}
