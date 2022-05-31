@@ -134,7 +134,8 @@ public class King extends Figure {
             boolean[][] attackedByBlackBoard, int currentX, int currentY) {
         /* Castling only for 8x8 standard and 960 */
         int i = 1;
-        if (this.color == true && board[currentX][currentY].hasBeenMoved == false) {
+        if (this.color == true && board[currentX][currentY].hasBeenMoved == false
+                && attackedByBlackBoard[currentX][currentY] != true) {
             i = 1;
             while (currentX + i < board.length) {
                 if (board[currentX + i][currentY].value == 5 && board[currentX + i][currentY].hasBeenMoved == false) {
@@ -172,7 +173,8 @@ public class King extends Figure {
                 i++;
             }
         }
-        if (this.color == false && board[currentX][currentY].hasBeenMoved == false) {
+        if (this.color == false && board[currentX][currentY].hasBeenMoved == false
+                && attackedByWhiteBoard[currentX][currentY] != true) {
             i = 1;
             while (currentX + i < board.length) {
                 if (board[currentX + i][currentY].value == 5 && board[currentX + i][currentY].hasBeenMoved == false) {

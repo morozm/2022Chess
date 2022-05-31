@@ -20,8 +20,9 @@ public class Settings {
 
         Font font1 = new Font("Counter-Strike Regular", Font.PLAIN, 50);
         Font font2 = new Font("Guardians", Font.BOLD, (int) (400 / (Math.pow(Math.max(boardLength, boardWidth), 1.5))));
+        Font font3 = new Font("Guardians", Font.BOLD, 18);
 
-        String[][] defaultPosition = {
+        String[][] defaultPosition1 = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -91,7 +92,17 @@ public class Settings {
                         { "wP", "wP", "  ", "wK", "  ", "  ", "bQ", "  " },
                         { "wR", "  ", "wB", "  ", "  ", "  ", "  ", "  " }
         };
-        String[][] defaultPosition8 = {
+        String[][] defaultPosition = {
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "bK", "  ", "  ", "  ", "  ", "  ", "wP", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "wQ" },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "wQ", "  ", "  ", "  ", "  ", "  ", "  " }
+        };
+        String[][] defaultPosition9 = {
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
@@ -105,7 +116,7 @@ public class Settings {
                         { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
                         { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" }
         };
-        String[][] defaultPosition9 = {
+        String[][] defaultPosition10 = {
                         { "bK", "  ", "  " },
                         { "  ", "  ", "  " },
                         { "  ", "wQ", "  " }
