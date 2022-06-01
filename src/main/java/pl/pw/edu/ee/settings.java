@@ -5,11 +5,12 @@ import java.awt.Font;
 //import java.lang.Math;
 
 public class Settings {
-        public int boardLength = 8; // a-h
-        public int boardWidth = 8; // 1-8
+        public int boardLength = 16; // a-h
+        public int boardWidth = 16; // 1-8
         boolean whiteStartsGame = true;
         Color mainColor1 = new Color(222, 155, 53); // orange
         Color mainColor2 = new Color(12, 15, 18); // black
+        Color mainColor3 = new Color(188, 182, 174); // grey
         Color tileColor1 = new Color(204, 186, 124);
         Color tileColor2 = new Color(65, 58, 39);
         Color attackColor = new Color(255, 100, 100); // red
@@ -21,8 +22,9 @@ public class Settings {
         Font font1 = new Font("Counter-Strike Regular", Font.PLAIN, 50);
         Font font2 = new Font("Guardians", Font.BOLD, (int) (400 / (Math.pow(Math.max(boardLength, boardWidth), 1.5))));
         Font font3 = new Font("Guardians", Font.BOLD, 18);
+        Font font4 = new Font("Guardians", Font.BOLD, 12);
 
-        String[][] defaultPosition1 = {
+        String[][] defaultPosition = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -92,7 +94,7 @@ public class Settings {
                         { "wP", "wP", "  ", "wK", "  ", "  ", "bQ", "  " },
                         { "wR", "  ", "wB", "  ", "  ", "  ", "  ", "  " }
         };
-        String[][] defaultPosition = {
+        String[][] defaultPosition8 = {
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "bK", "  ", "  ", "  ", "  ", "  ", "wP", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "wQ" },
