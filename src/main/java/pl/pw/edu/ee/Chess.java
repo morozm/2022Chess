@@ -173,6 +173,15 @@ public class Chess implements ActionListener {
 		}
 		sideLabelButtons[4].setPreferredSize(new Dimension(168, 62));
 		sideLabelButtons[5].setPreferredSize(new Dimension(168, 62));
+		// JLabel sideLabelButtonsLabel1 = new JLabel();
+		// JLabel sideLabelButtonsLabel2 = new JLabel();
+		// sideLabelButtonsLabel1.setIcon(new ImageIcon("src\\icons\\add.png"));
+		// sideLabelButtonsLabel2.setIcon(new ImageIcon("src\\icons\\settings.png"));
+		// sideLabelButtons[4].add(sideLabelButtonsLabel1);
+		// sideLabelButtons[5].add(sideLabelButtonsLabel2);
+
+		sideLabelButtons[4].setIcon(new ImageIcon("src\\icons\\add32.png"));
+		sideLabelButtons[5].setIcon(new ImageIcon("src\\icons\\settings32.png"));
 
 		bottomPanel.setLayout(new BorderLayout());
 		bottomPanel.setPreferredSize(new Dimension(800, 800));
