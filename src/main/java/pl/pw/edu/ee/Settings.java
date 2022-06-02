@@ -5,8 +5,8 @@ import java.awt.Font;
 //import java.lang.Math;
 
 public class Settings {
-        public int boardLength = 16; // a-h
-        public int boardWidth = 16; // 1-8
+        public int boardLength = 8; // a-h
+        public int boardWidth = 8; // 1-8
         boolean whiteStartsGame = true;
         Color mainColor1 = new Color(222, 155, 53); // orange
         Color mainColor2 = new Color(12, 15, 18); // black
@@ -105,6 +105,16 @@ public class Settings {
                         { "  ", "wQ", "  ", "  ", "  ", "  ", "  ", "  " }
         };
         String[][] defaultPosition9 = {
+                        { "  ", "  ", "bR", "  ", "  ", "  ", "  ", "bK" },
+                        { "  ", "  ", "bR", "bN", "  ", "bP", "bP", "bP" },
+                        { "bP", "  ", "bQ", "  ", "  ", "bN", "  ", "  " },
+                        { "wP", "bP", "wP", "bP", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "wP", "bP", "  ", "  ", "  " },
+                        { "wR", "  ", "  ", "  ", "wP", "  ", "  ", "  " },
+                        { "  ", "wQ", "  ", "wN", "wB", "wP", "wP", "wP" },
+                        { "  ", "  ", "wR", "  ", "  ", "  ", "wK", "  " }
+        };
+        String[][] defaultPosition10 = {
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
@@ -118,9 +128,49 @@ public class Settings {
                         { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" },
                         { "wP", "wP", "wP", "wP", "wP", "wP", "wP", "wP" }
         };
-        String[][] defaultPosition10 = {
+        String[][] defaultPosition11 = {
                         { "bK", "  ", "  " },
                         { "  ", "  ", "  " },
                         { "  ", "wQ", "  " }
+        };
+        boolean[][] defaultPositionHasBeenMoved = {
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, }
+        };
+        boolean[][] defaultPositionisJustDoubleMovedPawn = {
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, }
+        };
+        boolean[][] defaultPositionHasBeenMoved9 = {
+                        { false, false, false, false, false, false, false, true, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, true, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, true, false, false, false, false, false, }
+        };
+        boolean[][] defaultPositionisJustDoubleMovedPawn9 = {
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, true, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, },
+                        { false, false, false, false, false, false, false, false, }
         };
 }

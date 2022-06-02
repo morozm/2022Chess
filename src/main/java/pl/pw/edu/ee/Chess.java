@@ -374,8 +374,18 @@ public class Chess implements ActionListener {
 	void loadPosition() {
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				if (i >= defaultSettings.defaultPosition.length || j >= defaultSettings.defaultPosition[0].length
-						|| i >= defaultSettings.boardWidth || j >= defaultSettings.boardLength) {
+				if (i >= defaultSettings.defaultPosition.length || j >= defaultSettings.defaultPosition[0].length) {
+					continue;
+				}
+				if (i >= defaultSettings.defaultPositionHasBeenMoved.length
+						|| j >= defaultSettings.defaultPositionHasBeenMoved[0].length) {
+					continue;
+				}
+				if (i >= defaultSettings.defaultPositionisJustDoubleMovedPawn.length
+						|| j >= defaultSettings.defaultPositionisJustDoubleMovedPawn[0].length) {
+					continue;
+				}
+				if (i >= defaultSettings.boardWidth || j >= defaultSettings.boardLength) {
 					continue;
 				}
 				for (int k = 0; k < pieces.length; k++) {
@@ -403,6 +413,8 @@ public class Chess implements ActionListener {
 					mainBoard[j][i].color = false;
 					mainBoard[j][i].exists = true;
 				}
+				mainBoard[j][i].hasBeenMoved = defaultSettings.defaultPositionHasBeenMoved[i][j];
+				mainBoard[j][i].isJustDoubleMovedPawn = defaultSettings.defaultPositionisJustDoubleMovedPawn[i][j];
 			}
 		}
 		savedGame[turnNumber] = defaultSettings.defaultPosition;
@@ -449,12 +461,30 @@ public class Chess implements ActionListener {
 								|| mainBoard[j][i].availableStrikes[l][k] == true)
 								&& (mainBoard[j][i].color == isWhiteTurn)) {
 							boolean hasBeenMoved = mainBoard[j][i].hasBeenMoved;
+							boolean isJustDoubleMovedPawn = mainBoard[j][i].isJustDoubleMovedPawn;
 							Figure tmpFigure = mainBoard[l][k];
-							moveFigure(j, i, l, k, mainBoard);
-							if (checkCheck(mainBoard, isWhiteTurn) == false) {
-								mainBoard[l][k].legalMovesStrikes[l][k] = true;
+							Figure tmpEnPassantFigure = new Figure() {
+							};
+							if (mainBoard[j][i].type == "pawn" && mainBoard[l][k].exists == false && j != l) {
+								if (mainBoard[j][i].color == true) {
+									tmpEnPassantFigure = mainBoard[l][k + 1];
+								} else {
+									tmpEnPassantFigure = mainBoard[l][k - 1];
+								}
+								moveFigure(j, i, l, k, mainBoard);
+								if (checkCheck(mainBoard, isWhiteTurn) == false) {
+									mainBoard[l][k].legalMovesStrikes[l][k] = true;
+								}
+								undoMoveFigure(l, k, j, i, mainBoard, hasBeenMoved, isJustDoubleMovedPawn, tmpFigure,
+										tmpEnPassantFigure);
+							} // en passant
+							else {
+								moveFigure(j, i, l, k, mainBoard);
+								if (checkCheck(mainBoard, isWhiteTurn) == false) {
+									mainBoard[l][k].legalMovesStrikes[l][k] = true;
+								}
+								undoMoveFigure(l, k, j, i, mainBoard, hasBeenMoved, isJustDoubleMovedPawn, tmpFigure);
 							}
-							undoMoveFigure(l, k, j, i, mainBoard, hasBeenMoved, tmpFigure);
 						}
 					}
 				}
@@ -499,6 +529,14 @@ public class Chess implements ActionListener {
 	}
 
 	void moveGUI(int selectedButtonX, int selectedButtonY, int j, int i) {
+		if (mainBoard[j][i].color == true && mainBoard[j][i].type == "pawn"
+				&& mainBoard[j][i + 1].exists == false && selectedButtonX != j) {
+			buttons[j][i + 1].setIcon(null);
+		}
+		if (mainBoard[j][i].color == false && mainBoard[j][i].type == "pawn"
+				&& mainBoard[j][i - 1].exists == false && selectedButtonX != j) {
+			buttons[j][i - 1].setIcon(null);
+		}
 		Icon tmpIcon = buttons[selectedButtonX][selectedButtonY].getIcon();
 		buttons[selectedButtonX][selectedButtonY].setIcon(null);
 		buttons[j][i].setIcon(tmpIcon);
@@ -515,19 +553,55 @@ public class Chess implements ActionListener {
 	}
 
 	public void moveFigure(int fromX, int fromY, int toX, int toY, Figure[][] board) {
+		for (int i = 0; i < defaultSettings.boardWidth; i++) {
+			for (int j = 0; j < defaultSettings.boardLength; j++) {
+				board[j][i].isJustDoubleMovedPawn = false;
+			}
+		}
+		if (board[fromX][fromY].type == "pawn" && board[toX][toY].exists == false && fromX != toX) { // en passant
+			if (board[fromX][fromY].color == true) {
+				board[toX][toY + 1] = new Figure() {
+				};
+			}
+			if (board[fromX][fromY].color == false) {
+				board[toX][toY - 1] = new Figure() {
+				};
+			}
+		}
 		Figure tmpFigure = board[fromX][fromY];
 		board[fromX][fromY] = new Figure() {
 		};
 		board[toX][toY] = tmpFigure;
+		if (board[toX][toY].type == "pawn" && board[toX][toY].hasBeenMoved == false && Math.abs(fromY - toY) == 2) {
+			board[toX][toY].isJustDoubleMovedPawn = true;
+		} else {
+			board[toX][toY].isJustDoubleMovedPawn = false;
+		}
 		board[toX][toY].hasBeenMoved = true;
 	}
 
 	public void undoMoveFigure(int fromX, int fromY, int toX, int toY, Figure[][] board, boolean hasBeenMoved,
-			Figure strikeFigure) {
+			boolean isJustDoubleMovedPawn, Figure strikeFigure) {
 		Figure tmpFigure = board[fromX][fromY];
 		board[fromX][fromY] = strikeFigure;
 		board[toX][toY] = tmpFigure;
 		board[toX][toY].hasBeenMoved = hasBeenMoved;
+		board[toX][toY].isJustDoubleMovedPawn = isJustDoubleMovedPawn;
+	}
+
+	public void undoMoveFigure(int fromX, int fromY, int toX, int toY, Figure[][] board, boolean hasBeenMoved,
+			boolean isJustDoubleMovedPawn, Figure strikeFigure, Figure enPassantFigure) {
+		Figure tmpFigure = board[fromX][fromY];
+		board[fromX][fromY] = strikeFigure;
+		board[toX][toY] = tmpFigure;
+		board[toX][toY].hasBeenMoved = hasBeenMoved;
+		board[toX][toY].isJustDoubleMovedPawn = isJustDoubleMovedPawn;
+		if (board[toX][toY].color == true) {
+			board[fromX][fromY + 1] = enPassantFigure;
+		}
+		if (board[toX][toY].color == false) {
+			board[fromX][fromY - 1] = enPassantFigure;
+		}
 	}
 
 	public void moveCastle(int kingX, int kingY, int rookX, int rookY, Figure[][] board) {

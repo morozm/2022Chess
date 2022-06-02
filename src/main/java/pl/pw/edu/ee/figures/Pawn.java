@@ -44,10 +44,13 @@ public class Pawn extends Figure {
                 }
             }
             if (currentY + 1 <= board[0].length - 1 && currentX + 1 <= board.length - 1) {
-                // wywali się jak będzie na końcu boarda Y+1 poza zakresem
                 attackedByBlackBoard[currentX + 1][currentY + 1] = true;
                 if (board[currentX + 1][currentY + 1].exists == true
                         && board[currentX + 1][currentY + 1].color == true) {
+                    availableStrikes[currentX + 1][currentY + 1] = true;
+                }
+                if (board[currentX + 1][currentY].exists == true
+                        && board[currentX + 1][currentY].color == true && board[currentX + 1][currentY].isJustDoubleMovedPawn == true) {
                     availableStrikes[currentX + 1][currentY + 1] = true;
                 }
             }
@@ -55,6 +58,10 @@ public class Pawn extends Figure {
                 attackedByBlackBoard[currentX - 1][currentY + 1] = true;
                 if (board[currentX - 1][currentY + 1].exists == true
                         && board[currentX - 1][currentY + 1].color == true) {
+                    availableStrikes[currentX - 1][currentY + 1] = true;
+                }
+                if (board[currentX - 1][currentY].exists == true
+                        && board[currentX - 1][currentY].color == true && board[currentX - 1][currentY].isJustDoubleMovedPawn == true) {
                     availableStrikes[currentX - 1][currentY + 1] = true;
                 }
             }
@@ -84,11 +91,19 @@ public class Pawn extends Figure {
                         && board[currentX + 1][currentY - 1].color == false) {
                     availableStrikes[currentX + 1][currentY - 1] = true;
                 }
+                if (board[currentX + 1][currentY].exists == true
+                        && board[currentX + 1][currentY].color == false && board[currentX + 1][currentY].isJustDoubleMovedPawn == true) {
+                    availableStrikes[currentX + 1][currentY - 1] = true;
+                }
             }
             if (currentY - 1 >= 0 && currentX - 1 >= 0) {
                 attackedByWhiteBoard[currentX - 1][currentY - 1] = true;
                 if (board[currentX - 1][currentY - 1].exists == true
                         && board[currentX - 1][currentY - 1].color == false) {
+                    availableStrikes[currentX - 1][currentY - 1] = true;
+                }
+                if (board[currentX - 1][currentY].exists == true
+                        && board[currentX - 1][currentY].color == false && board[currentX - 1][currentY].isJustDoubleMovedPawn == true) {
                     availableStrikes[currentX - 1][currentY - 1] = true;
                 }
             }

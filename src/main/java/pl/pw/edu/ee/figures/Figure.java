@@ -7,11 +7,12 @@ public abstract class Figure {
     public boolean exists = false;
     public boolean color;
     public int value;
-    public boolean[][] availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];;
-    public boolean[][] availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];;
+    public boolean[][] availableMoves = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
+    public boolean[][] availableStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
     public boolean[][] legalMovesStrikes = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
-    public boolean[][] availableCastle = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];;
+    public boolean[][] availableCastle = new boolean[defaultSettings.boardLength][defaultSettings.boardWidth];
     public boolean hasBeenMoved = false;
+    public boolean isJustDoubleMovedPawn = false;
     public String type = "";
 
     public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
