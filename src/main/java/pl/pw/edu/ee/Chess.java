@@ -1,10 +1,6 @@
 package pl.pw.edu.ee;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,16 +9,7 @@ import java.util.Random;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
 import javax.swing.Timer;
 
 import pl.pw.edu.ee.figures.Bishop;
@@ -37,239 +24,55 @@ public class Chess implements ActionListener {
 
 	Settings defaultSettings = new Settings();
 	Board defaultBoard = new Board();
+	GUI gui = new GUI();
 	// Move defaultMove = new Move();
 
-	Random random = new Random();
-	boolean whiteTurn = true;
-	int turnNumber = 1;
-	JFrame frame = new JFrame();
-	JPanel titlePanel = new JPanel();
-	JPanel buttonPanel = new JPanel();
-	JLayeredPane[][] buttonsLayeredPane = new JLayeredPane[defaultSettings.boardLength][defaultSettings.boardWidth];
-	JPanel sidePanel = new JPanel();
-	JPanel sideButtonsPanel = new JPanel();
-	JPanel bottomPanel = new JPanel();
-	JPanel sidePiecesPanel = new JPanel();
-	JLabel textLabel = new JLabel();
-	JLabel[] leftLabels = new JLabel[defaultSettings.boardWidth];
-	JLabel[] bottomLabels = new JLabel[defaultSettings.boardLength];
-	Border border1 = BorderFactory.createLineBorder(defaultSettings.mainColor1, 4);
-	Border border2 = BorderFactory.createLineBorder(defaultSettings.mainColor2, 4);
-	Border emptyBorder1 = BorderFactory.createEmptyBorder();
-	Border emptyBorder2 = BorderFactory.createEmptyBorder(4, 4, 4, 4);
-	Border defaultBorder = (new JButton().getBorder());
-	JLabel[] sideLabel = new JLabel[4];
-	JButton[] sideLabelButtons = new JButton[6];
-	JButton[][] buttons = new JButton[defaultSettings.boardLength][defaultSettings.boardWidth];
-	JButton[] sideButtons = new JButton[4];
 	Figure[][] mainBoard = new Figure[defaultSettings.boardLength][defaultSettings.boardWidth];
 	String[][][] savedGame = new String[1000][defaultSettings.boardLength][defaultSettings.boardWidth];
-	// change for longer games
-	boolean buttonIsSelected = false;
+	String[] pieces = { "bP", "bR", "bN", "bB", "bQ", "bK", "wP", "wR", "wN", "wB", "wQ", "wK" };
+	int[] lastMove = new int[4];
+
+	int turnNumber = 1;
+	int chosenFigure;
 	int selectedButtonY;
 	int selectedButtonX;
-	int chosenFigure;
+
+	boolean buttonIsSelected = false;
 	boolean gameStopped = false;
 	boolean justPromoted = false;
-	int[] lastMove = new int[4];
+	boolean whiteTurn = true;
+
+	Random random = new Random();
+
 	ArrayList<Move> allMoves = new ArrayList<Move>();
-	Color defaultColor = UIManager.getColor("Panel.background");
+
 	Timer timer;
 
-	String[] pieces = { "bP", "bR", "bN", "bB", "bQ", "bK", "wP", "wR", "wN", "wB", "wQ", "wK" };
-	ImageIcon[] piecesIcons = {
-			new ImageIcon("src\\pieces\\bP.png"),
-			new ImageIcon("src\\pieces\\bR.png"),
-			new ImageIcon("src\\pieces\\bN.png"),
-			new ImageIcon("src\\pieces\\bB.png"),
-			new ImageIcon("src\\pieces\\bQ.png"),
-			new ImageIcon("src\\pieces\\bK.png"),
-			new ImageIcon("src\\pieces\\wP.png"),
-			new ImageIcon("src\\pieces\\wR.png"),
-			new ImageIcon("src\\pieces\\wN.png"),
-			new ImageIcon("src\\pieces\\wB.png"),
-			new ImageIcon("src\\pieces\\wQ.png"),
-			new ImageIcon("src\\pieces\\wK.png") };
-
 	Chess() {
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1200, 930);
-		frame.setTitle("Best Chess Ever Made");
-		frame.setResizable(false); // cant resize window
-		frame.setIconImage(piecesIcons[11].getImage());
-		frame.getContentPane().setBackground(defaultSettings.mainColor2);
-		frame.setLayout(new BorderLayout());
-		frame.setVisible(true);
-
-		textLabel.setBackground(defaultSettings.mainColor2);
-		textLabel.setForeground(defaultSettings.mainColor1);
-		textLabel.setFont(defaultSettings.font1);
-		textLabel.setHorizontalAlignment(JLabel.CENTER);
-		textLabel.setText("Wie Pan Co To Znaczy Trappin?");
-		textLabel.setOpaque(true);
-		textLabel.setBorder(border1);
-
-		titlePanel.setLayout(new BorderLayout());
-		titlePanel.setPreferredSize(new Dimension(1200, 83));
-
-		sidePanel.setLayout(new BorderLayout());
-		sidePanel.setPreferredSize(new Dimension(400, 800));
-		sidePanel.setBorder(border1);
-		sidePanel.setBackground(defaultSettings.mainColor2);
-
-		sideButtonsPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-		sideButtonsPanel.setPreferredSize(new Dimension(400, 680));
-		sideButtonsPanel.setBackground(defaultSettings.mainColor2);
-
-		for (int i = 0; i < 4; i++) {
-			sideLabel[i] = new JLabel();
-			if (i == 0 || i == 2) {
-				sideLabel[i] = new TimerLabel(10 * 60 * 1000 + 100);
-				sideLabel[i].setFont(defaultSettings.font4);
-			}
-			if (i == 1 || i == 3) {
-				sideLabel[i].setText("text");
-				sideLabel[i].setFont(defaultSettings.font3);
-			}
-
-			sideLabel[i].setFocusable(false);
-			sideLabel[i].setHorizontalAlignment(JLabel.CENTER);
-			sideLabel[i].setPreferredSize(new Dimension(105, 62));
-			sideLabel[i].setForeground(defaultSettings.mainColor1);
-			sideLabel[i].setBackground(defaultSettings.mainColor2);
-			sideLabel[i].setOpaque(true);
-			sideLabel[i].setBorder(border1);
-		}
-		sideLabel[3].setPreferredSize(new Dimension(355, 400));
-		sideLabel[0].setBackground(Color.white);
-
 		timer = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// System.out.println("test");
-				if (((TimerLabel) sideLabel[0]).isRunOutOfTime() == true && gameStopped == false) {
+				if (((TimerLabel) gui.sideLabel[0]).isRunOutOfTime() == true && gameStopped == false) {
 					gameStopped = true;
 					System.out.println("BLACK WIN (white run out of time)");
 					System.out.println("Wie pan co to znaczy przegrać na czas?");
 				}
-				if (((TimerLabel) sideLabel[2]).isRunOutOfTime() == true && gameStopped == false) {
+				if (((TimerLabel) gui.sideLabel[2]).isRunOutOfTime() == true && gameStopped == false) {
 					gameStopped = true;
 					System.out.println("WHITE WIN (black run out of time)");
 					System.out.println("Wie pan co to znaczy przegrać na czas?");
 				}
 			}
 		});
-		timer.start();
-
-		for (int i = 0; i < 6; i++) {
-			sideLabelButtons[i] = new JButton();
-			sideLabelButtons[i].setFocusable(false);
-			// sideLabelButtons[i].setText("text");
-			sideLabelButtons[i].setHorizontalAlignment(JLabel.CENTER);
-			sideLabelButtons[i].setPreferredSize(new Dimension(74, 62));
-			sideLabelButtons[i].setForeground(defaultSettings.mainColor1);
-			sideLabelButtons[i].setBackground(defaultSettings.mainColor2);
-			sideLabelButtons[i].setOpaque(true);
-			sideLabelButtons[i].setBorder(border1);
-		}
-		sideLabelButtons[4].setPreferredSize(new Dimension(168, 62));
-		sideLabelButtons[5].setPreferredSize(new Dimension(168, 62));
-		// JLabel sideLabelButtonsLabel1 = new JLabel();
-		// JLabel sideLabelButtonsLabel2 = new JLabel();
-		// sideLabelButtonsLabel1.setIcon(new ImageIcon("src\\icons\\add.png"));
-		// sideLabelButtonsLabel2.setIcon(new ImageIcon("src\\icons\\settings.png"));
-		// sideLabelButtons[4].add(sideLabelButtonsLabel1);
-		// sideLabelButtons[5].add(sideLabelButtonsLabel2);
-
-		sideLabelButtons[4].setIcon(new ImageIcon("src\\icons\\add32.png"));
-		sideLabelButtons[5].setIcon(new ImageIcon("src\\icons\\settings32.png"));
-
-		bottomPanel.setLayout(new BorderLayout());
-		bottomPanel.setPreferredSize(new Dimension(800, 800));
-		bottomPanel.setBorder(border1);
-		bottomPanel.setBackground(defaultSettings.mainColor2);
-
-		sidePiecesPanel.setLayout(new GridLayout(1, 4));
-		sidePiecesPanel.setPreferredSize(new Dimension(400, 100));
-		sidePiecesPanel.setBackground(defaultSettings.mainColor2);
-		sidePiecesPanel.setVisible(false);
-
 		for (int i = 0; i < 4; i++) {
-			sideButtons[i] = new JButton();
-			sidePiecesPanel.add(sideButtons[i]);
-			sideButtons[i].setFocusable(false);
-			sideButtons[i].addActionListener(this);
-			sideButtons[i].setBorder(emptyBorder2);
-			if (i % 2 == 1) {
-				sideButtons[i].setBackground(defaultSettings.tileColor1);
-			} else
-				sideButtons[i].setBackground(defaultSettings.tileColor2);
+			gui.sideButtons[i].addActionListener(this);
 		}
-
-		buttonPanel.setLayout(new GridLayout(defaultSettings.boardWidth, defaultSettings.boardLength));
-		buttonPanel.setBackground(defaultSettings.mainColor2);
-		buttonPanel.setPreferredSize(new Dimension(800, 800));
-
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				buttons[j][i] = new JButton();
-				buttonPanel.add(buttons[j][i]);
-				buttons[j][i].setFocusable(false);
-				buttons[j][i].addActionListener(this);
-				buttons[j][i].setBorder(emptyBorder2);
-				mainBoard[j][i] = new Figure() {
-				};
-				if ((i + j) % 2 == 0) {
-					buttons[j][i].setBackground(defaultSettings.tileColor1);
-					buttons[j][i].setForeground(defaultSettings.tileColor1);
-				} else
-					buttons[j][i].setBackground(defaultSettings.tileColor2);
-				buttons[j][i].setForeground(defaultSettings.tileColor2);
-				if (j == 0) {
-					leftLabels[i] = new JLabel();
-					leftLabels[i].setText(Integer.toString(defaultSettings.boardWidth - i));
-					leftLabels[i].setFont(defaultSettings.font2);
-					if ((i + j) % 2 == 0)
-						leftLabels[i].setForeground(defaultSettings.tileColor2);
-					else
-						leftLabels[i].setForeground(defaultSettings.tileColor1);
-					buttons[j][i].setLayout(new BorderLayout());
-					buttons[j][i].add(leftLabels[i], BorderLayout.NORTH);
-				}
-				if (i == defaultSettings.boardWidth - 1) {
-					bottomLabels[i] = new JLabel();
-					char c = (char) (j + 1 + 64 + 32);
-					String s = String.valueOf(c);
-					bottomLabels[i].setText(s);
-					bottomLabels[i].setFont(defaultSettings.font2);
-					bottomLabels[i].setHorizontalAlignment(JLabel.RIGHT);
-					if ((i + j) % 2 == 0)
-						bottomLabels[i].setForeground(defaultSettings.tileColor2);
-					else
-						bottomLabels[i].setForeground(defaultSettings.tileColor1);
-					if (j != 0)
-						buttons[j][i].setLayout(new BorderLayout());
-					buttons[j][i].add(bottomLabels[i], BorderLayout.SOUTH);
-				}
+				gui.buttons[j][i].addActionListener((ActionListener) this);
 			}
 		}
-
-		titlePanel.add(textLabel);
-		sidePanel.add(sidePiecesPanel, BorderLayout.SOUTH);
-		sideButtonsPanel.add(sideLabel[0]);
-		sideButtonsPanel.add(sideLabel[1]);
-		sideButtonsPanel.add(sideLabel[2]);
-		sideButtonsPanel.add(sideLabel[3]);
-		sideButtonsPanel.add(sideLabelButtons[0]);
-		sideButtonsPanel.add(sideLabelButtons[1]);
-		sideButtonsPanel.add(sideLabelButtons[2]);
-		sideButtonsPanel.add(sideLabelButtons[3]);
-		sideButtonsPanel.add(sideLabelButtons[4]);
-		sideButtonsPanel.add(sideLabelButtons[5]);
-		sidePanel.add(sideButtonsPanel, BorderLayout.NORTH);
-		bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
-		frame.add(titlePanel, BorderLayout.NORTH);
-		frame.add(sidePanel, BorderLayout.EAST);
-		frame.add(bottomPanel);
+		timer.start();
 
 		// makeSound("bombsiteB");
 		loadPosition();
@@ -285,7 +88,7 @@ public class Chess implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				if (e.getSource() == buttons[j][i]) {
+				if (e.getSource() == gui.buttons[j][i]) {
 					if ((selectedButtonX == j) && (selectedButtonY == i) && (buttonIsSelected == true)) {
 						// turn off selected button
 						buttonIsSelected = false;
@@ -335,37 +138,37 @@ public class Chess implements ActionListener {
 						buttonIsSelected = true;
 						selectedButtonX = j;
 						selectedButtonY = i;
-						buttons[j][i].setBackground(defaultSettings.selectColor);
-						buttons[j][i].setBorder(border2);
+						gui.buttons[j][i].setBackground(defaultSettings.selectColor);
+						gui.buttons[j][i].setBorder(gui.border2);
 					}
 					if (mainBoard[selectedButtonX][selectedButtonY].color != whiteTurn
 							&& mainBoard[selectedButtonX][selectedButtonY].exists == true && buttonIsSelected == true) {
-						textLabel.setText("Not your piece");
+						gui.textLabel.setText("Not your piece");
 					} else if (mainBoard[selectedButtonX][selectedButtonY].exists == false
 							&& buttonIsSelected == true) {
-						textLabel.setText("Nothing here");
+						gui.textLabel.setText("Nothing here");
 					} else if (buttonIsSelected == false) {
 						if (whiteTurn == true) {
-							textLabel.setText("White on move");
+							gui.textLabel.setText("White on move");
 						} else {
-							textLabel.setText("Black on move");
+							gui.textLabel.setText("Black on move");
 						}
 						// textfield.setText("Click something");
 					} else if (mainBoard[selectedButtonX][selectedButtonY].color == whiteTurn
 							&& mainBoard[selectedButtonX][selectedButtonY].exists == true && buttonIsSelected == true) {
-						textLabel.setText("OK but where?");
+						gui.textLabel.setText("OK but where?");
 						for (int k = 0; k < defaultSettings.boardWidth; k++) {
 							for (int l = 0; l < defaultSettings.boardLength; l++) {
 								if (mainBoard[selectedButtonX][selectedButtonY].availableMoves[l][k] == true
 										&& mainBoard[selectedButtonX][selectedButtonY].legalMovesStrikes[l][k] == true) {
-									buttons[l][k].setBackground(defaultSettings.moveColor);
+									gui.buttons[l][k].setBackground(defaultSettings.moveColor);
 								}
 								if (mainBoard[selectedButtonX][selectedButtonY].availableStrikes[l][k] == true
 										&& mainBoard[selectedButtonX][selectedButtonY].legalMovesStrikes[l][k] == true) {
-									buttons[l][k].setBackground(defaultSettings.attackColor);
+									gui.buttons[l][k].setBackground(defaultSettings.attackColor);
 								}
 								if (mainBoard[selectedButtonX][selectedButtonY].availableCastle[l][k] == true) {
-									buttons[l][k].setBackground(defaultSettings.castleColor);
+									gui.buttons[l][k].setBackground(defaultSettings.castleColor);
 								}
 							}
 						}
@@ -374,7 +177,7 @@ public class Chess implements ActionListener {
 			}
 		}
 		for (int i = 0; i < 4; i++) {
-			if (e.getSource() == sideButtons[i]) {
+			if (e.getSource() == gui.sideButtons[i]) {
 				promote2(mainBoard, selectedButtonX, selectedButtonY, i);
 			}
 		}
@@ -383,6 +186,8 @@ public class Chess implements ActionListener {
 	void loadPosition() {
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
+				mainBoard[j][i] = new Figure() {
+				};
 				if (i >= defaultSettings.defaultPosition.length || j >= defaultSettings.defaultPosition[0].length) {
 					continue;
 				}
@@ -399,7 +204,7 @@ public class Chess implements ActionListener {
 				}
 				for (int k = 0; k < pieces.length; k++) {
 					if (pieces[k] == defaultSettings.defaultPosition[i][j]) {
-						buttons[j][i].setIcon(piecesIcons[k]);
+						gui.buttons[j][i].setIcon(gui.piecesIcons[k]);
 					}
 				}
 				if (defaultSettings.defaultPosition[i][j].charAt(1) == 'R')
@@ -457,7 +262,6 @@ public class Chess implements ActionListener {
 						attackedBoard.attackedByBlackBoard, j, i);
 			}
 		}
-		// System.out.println("test");
 	}
 
 	void setLegalMovesForBoard(boolean isWhiteTurn) {
@@ -540,15 +344,15 @@ public class Chess implements ActionListener {
 	void moveGUI(int selectedButtonX, int selectedButtonY, int j, int i) {
 		if (mainBoard[j][i].color == true && mainBoard[j][i].type == "pawn"
 				&& mainBoard[j][i + 1].exists == false && selectedButtonX != j) {
-			buttons[j][i + 1].setIcon(null);
+			gui.buttons[j][i + 1].setIcon(null);
 		}
 		if (mainBoard[j][i].color == false && mainBoard[j][i].type == "pawn"
 				&& mainBoard[j][i - 1].exists == false && selectedButtonX != j) {
-			buttons[j][i - 1].setIcon(null);
+			gui.buttons[j][i - 1].setIcon(null);
 		}
-		Icon tmpIcon = buttons[selectedButtonX][selectedButtonY].getIcon();
-		buttons[selectedButtonX][selectedButtonY].setIcon(null);
-		buttons[j][i].setIcon(tmpIcon);
+		Icon tmpIcon = gui.buttons[selectedButtonX][selectedButtonY].getIcon();
+		gui.buttons[selectedButtonX][selectedButtonY].setIcon(null);
+		gui.buttons[j][i].setIcon(tmpIcon);
 	}
 
 	void moveGUICastle(int kingX, int kingY, int rookX, int rookY) {
@@ -634,24 +438,24 @@ public class Chess implements ActionListener {
 	}
 
 	public void promote1(Figure[][] board, int currentX, int currentY) {
-		sidePiecesPanel.setVisible(true);
+		gui.sidePiecesPanel.setVisible(true);
 		if (board[currentX][currentY].color == true) {
-			sideButtons[0].setIcon(piecesIcons[7]);
-			sideButtons[1].setIcon(piecesIcons[8]);
-			sideButtons[2].setIcon(piecesIcons[9]);
-			sideButtons[3].setIcon(piecesIcons[10]);
+			gui.sideButtons[0].setIcon(gui.piecesIcons[7]);
+			gui.sideButtons[1].setIcon(gui.piecesIcons[8]);
+			gui.sideButtons[2].setIcon(gui.piecesIcons[9]);
+			gui.sideButtons[3].setIcon(gui.piecesIcons[10]);
 		} else {
-			sideButtons[0].setIcon(piecesIcons[1]);
-			sideButtons[1].setIcon(piecesIcons[2]);
-			sideButtons[2].setIcon(piecesIcons[3]);
-			sideButtons[3].setIcon(piecesIcons[4]);
+			gui.sideButtons[0].setIcon(gui.piecesIcons[1]);
+			gui.sideButtons[1].setIcon(gui.piecesIcons[2]);
+			gui.sideButtons[2].setIcon(gui.piecesIcons[3]);
+			gui.sideButtons[3].setIcon(gui.piecesIcons[4]);
 		}
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				buttons[j][i].setEnabled(false);
+				gui.buttons[j][i].setEnabled(false);
 			}
 		}
-		textLabel.setText("Choose a figure");
+		gui.textLabel.setText("Choose a figure");
 	}
 
 	public void promote2(Figure[][] board, int currentX, int currentY, int whichButton) {
@@ -681,15 +485,10 @@ public class Chess implements ActionListener {
 		}
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				buttons[j][i].setEnabled(true);
+				gui.buttons[j][i].setEnabled(true);
 			}
 		}
-		sidePiecesPanel.setVisible(false);
-		// turnOffAllButtons();
-		// buttonIsSelected = false;
-		// whiteTurn = !whiteTurn;
-		// turnNumber++;
-		// turnOnLastMove(); // not sure bout this block
+		gui.sidePiecesPanel.setVisible(false);
 		setAvailableMovesForBoard(mainBoard, defaultBoard);
 		setLegalMovesForBoard(!whiteTurn);
 		setAllMovesArrayList();
@@ -707,9 +506,9 @@ public class Chess implements ActionListener {
 
 	public void changeGUI(int whichButton) {
 		if (mainBoard[lastMove[2]][lastMove[3]].color == true)
-			buttons[lastMove[2]][lastMove[3]].setIcon(piecesIcons[7 + whichButton]);
+			gui.buttons[lastMove[2]][lastMove[3]].setIcon(gui.piecesIcons[7 + whichButton]);
 		else
-			buttons[lastMove[2]][lastMove[3]].setIcon(piecesIcons[1 + whichButton]);
+			gui.buttons[lastMove[2]][lastMove[3]].setIcon(gui.piecesIcons[1 + whichButton]);
 	}
 
 	public void saveLastMove(int fromX, int fromY, int toX, int toY) {
@@ -723,8 +522,8 @@ public class Chess implements ActionListener {
 	public void turnOnLastMove() {
 		if (turnNumber != 1 || whiteTurn != true) {
 			if (turnNumber != 1 || whiteTurn != true) {
-				buttons[lastMove[0]][lastMove[1]].setBackground(defaultSettings.lastMoveColor);
-				buttons[lastMove[2]][lastMove[3]].setBackground(defaultSettings.lastMoveColor);
+				gui.buttons[lastMove[0]][lastMove[1]].setBackground(defaultSettings.lastMoveColor);
+				gui.buttons[lastMove[2]][lastMove[3]].setBackground(defaultSettings.lastMoveColor);
 			}
 		}
 	}
@@ -732,14 +531,13 @@ public class Chess implements ActionListener {
 	public void turnOffAllButtons() {
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
-				buttons[j][i].setBorder(emptyBorder2);
-				// buttons[j][i].setBorder(defaultBorder);
+				gui.buttons[j][i].setBorder(gui.emptyBorder2);
 				if ((i + j) % 2 == 0) {
-					buttons[j][i].setBackground(defaultSettings.tileColor1);
-					buttons[j][i].setForeground(defaultSettings.tileColor1);
+					gui.buttons[j][i].setBackground(defaultSettings.tileColor1);
+					gui.buttons[j][i].setForeground(defaultSettings.tileColor1);
 				} else
-					buttons[j][i].setBackground(defaultSettings.tileColor2);
-				buttons[j][i].setForeground(defaultSettings.tileColor2);
+					gui.buttons[j][i].setBackground(defaultSettings.tileColor2);
+				gui.buttons[j][i].setForeground(defaultSettings.tileColor2);
 			}
 		}
 	}
@@ -1128,7 +926,7 @@ public class Chess implements ActionListener {
 		}
 	}
 
-	public Color colorChange(Color color, int r, int g, int b) {
+	public Color colorChange(Color color, int r, int g, int b) { // not used currently
 		int newRed = color.getRed() + r;
 		int newGreen = color.getGreen() + g;
 		int newBlue = color.getBlue() + b;
@@ -1150,23 +948,23 @@ public class Chess implements ActionListener {
 
 	public void pauseTimer(boolean isWhite) {
 		if (isWhite == true)
-			((TimerLabel) sideLabel[0]).stopTimer();
+			((TimerLabel) gui.sideLabel[0]).stopTimer();
 		else
-			((TimerLabel) sideLabel[2]).stopTimer();
+			((TimerLabel) gui.sideLabel[2]).stopTimer();
 	}
 
 	public void startTimer(boolean isWhite) {
 		if (isWhite == true)
-			((TimerLabel) sideLabel[0]).startTimer();
+			((TimerLabel) gui.sideLabel[0]).startTimer();
 		else
-			((TimerLabel) sideLabel[2]).startTimer();
+			((TimerLabel) gui.sideLabel[2]).startTimer();
 	}
 
 	public void setTurnText(int turnNumber) {
-		sideLabel[1].setText(Integer.toString(turnNumber));
+		gui.sideLabel[1].setText(Integer.toString(turnNumber));
 	}
 
-	public void firstTurn() {
+	public void firstTurn() { // not used currently
 		try {
 			Thread.sleep(0);
 		} catch (InterruptedException e) {
@@ -1174,9 +972,9 @@ public class Chess implements ActionListener {
 			e.printStackTrace();
 		}
 		if (random.nextInt(2) == 0) {
-			textLabel.setText("White starts");
+			gui.textLabel.setText("White starts");
 		} else {
-			textLabel.setText("Black starts (Just Kidding)");
+			gui.textLabel.setText("Black starts (Just Kidding)");
 		}
 	}
 
