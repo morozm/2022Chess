@@ -13,6 +13,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -27,10 +30,18 @@ public class GUI {
     JPanel sideButtonsPanel = new JPanel();
     JPanel bottomPanel = new JPanel();
     JPanel sidePiecesPanel = new JPanel();
+    JLabel scrollPanePanel = new JLabel();
+    JPanel outerScrollPanel = new JPanel();
+
     JLabel textLabel = new JLabel();
+    JLabel whiteMovesLabel = new JLabel();
+    JLabel blackMovesLabel = new JLabel();
     JLabel[] leftLabels = new JLabel[defaultSettings.boardWidth];
     JLabel[] bottomLabels = new JLabel[defaultSettings.boardLength];
-    JLabel[] sideLabel = new JLabel[4];
+    JLabel[] sideLabel = new JLabel[3];
+
+    JScrollPane scrollPane = new JScrollPane(scrollPanePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
     JButton[] sideLabelButtons = new JButton[6];
     JButton[] sideButtons = new JButton[4];
@@ -46,19 +57,26 @@ public class GUI {
 
     Color defaultColor = UIManager.getColor("Panel.background");
 
+    String newLine2 = new String("<br/>");
+    // String newLine = new String("<br/><br/>");
+    String startText = new String("<html>");
+    String endText = new String("</html>");
+
+    int numberOnGUI = 1;
+
     ImageIcon[] piecesIcons = {
-            new ImageIcon("src\\pieces_icons\\bP.png"),
-            new ImageIcon("src\\pieces_icons\\bR.png"),
-            new ImageIcon("src\\pieces_icons\\bN.png"),
-            new ImageIcon("src\\pieces_icons\\bB.png"),
-            new ImageIcon("src\\pieces_icons\\bQ.png"),
-            new ImageIcon("src\\pieces_icons\\bK.png"),
-            new ImageIcon("src\\pieces_icons\\wP.png"),
-            new ImageIcon("src\\pieces_icons\\wR.png"),
-            new ImageIcon("src\\pieces_icons\\wN.png"),
-            new ImageIcon("src\\pieces_icons\\wB.png"),
-            new ImageIcon("src\\pieces_icons\\wQ.png"),
-            new ImageIcon("src\\pieces_icons\\wK.png") };
+            new ImageIcon("src\\pieces_icons\\standard\\bP.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\bR.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\bN.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\bB.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\bQ.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\bK.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\wP.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\wR.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\wN.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\wB.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\wQ.png"),
+            new ImageIcon("src\\pieces_icons\\standard\\wK.png") };
 
     public GUI() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,13 +108,13 @@ public class GUI {
         sideButtonsPanel.setPreferredSize(new Dimension(400, 680));
         sideButtonsPanel.setBackground(defaultSettings.mainColor2);
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 3; i++) {
             sideLabel[i] = new JLabel();
             if (i == 0 || i == 2) {
                 sideLabel[i] = new TimerLabel(10 * 60 * 1000 + 100);
                 sideLabel[i].setFont(defaultSettings.font4);
             }
-            if (i == 1 || i == 3) {
+            if (i == 1) {
                 sideLabel[i].setFont(defaultSettings.font3);
             }
 
@@ -108,22 +126,36 @@ public class GUI {
             sideLabel[i].setOpaque(true);
             sideLabel[i].setBorder(border1);
         }
-        sideLabel[3].setPreferredSize(new Dimension(355, 400));
-        sideLabel[3].setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        // JPanel whiteMovesPanel = new JPanel();
-        // JPanel blackMovesPanel = new JPanel();
-        JLabel whiteMovesLabel = new JLabel();
-        JLabel blackMovesLabel = new JLabel();
-        whiteMovesLabel.setText("text");
-        blackMovesLabel.setText("text");
-        whiteMovesLabel.setPreferredSize(new Dimension(130, 300));
-        blackMovesLabel.setPreferredSize(new Dimension(130, 300));
-        whiteMovesLabel.setForeground(Color.white);
-        blackMovesLabel.setForeground(defaultSettings.mainColor1);
-        sideLabel[3].add(whiteMovesLabel);
-        sideLabel[3].add(blackMovesLabel);
 
-        sideLabel[0].setBackground(Color.white);
+        sideLabel[0].setForeground(Color.white);
+
+        whiteMovesLabel.setText(startText);
+        whiteMovesLabel.setHorizontalAlignment(JLabel.LEFT);
+        whiteMovesLabel.setVerticalAlignment(JLabel.TOP);
+        whiteMovesLabel.setFont(defaultSettings.font6);
+        whiteMovesLabel.setForeground(Color.white);
+        whiteMovesLabel.setPreferredSize(new Dimension(125, 300));
+
+        blackMovesLabel.setText(startText);
+        blackMovesLabel.setHorizontalAlignment(JLabel.LEFT);
+        blackMovesLabel.setVerticalAlignment(JLabel.TOP);
+        blackMovesLabel.setFont(defaultSettings.font6);
+        blackMovesLabel.setForeground(defaultSettings.mainColor1);
+        blackMovesLabel.setPreferredSize(new Dimension(125, 300));
+
+        scrollPane.getViewport().setBackground(defaultSettings.mainColor2);
+
+        scrollPanePanel.setPreferredSize(new Dimension(329, 300));
+        scrollPanePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 30, 20));
+
+        outerScrollPanel.setPreferredSize(new Dimension(355, 400));
+        outerScrollPanel.setBorder(border1);
+        outerScrollPanel.setLayout(new BorderLayout());
+        outerScrollPanel.setBackground(defaultSettings.mainColor2);
+
+        scrollPanePanel.add(whiteMovesLabel);
+        scrollPanePanel.add(blackMovesLabel);
+        outerScrollPanel.add(scrollPane);
 
         for (int i = 0; i < 6; i++) {
             sideLabelButtons[i] = new JButton();
@@ -137,6 +169,10 @@ public class GUI {
         }
         sideLabelButtons[4].setPreferredSize(new Dimension(168, 62));
         sideLabelButtons[5].setPreferredSize(new Dimension(168, 62));
+        sideLabelButtons[0].setIcon(new ImageIcon("src\\buttons_icons\\left_fast.png"));
+        sideLabelButtons[1].setIcon(new ImageIcon("src\\buttons_icons\\left.png"));
+        sideLabelButtons[2].setIcon(new ImageIcon("src\\buttons_icons\\right.png"));
+        sideLabelButtons[3].setIcon(new ImageIcon("src\\buttons_icons\\right_fast.png"));
         sideLabelButtons[4].setIcon(new ImageIcon("src\\buttons_icons\\add32.png"));
         sideLabelButtons[5].setIcon(new ImageIcon("src\\buttons_icons\\settings32.png"));
 
@@ -211,7 +247,7 @@ public class GUI {
         sideButtonsPanel.add(sideLabel[0]);
         sideButtonsPanel.add(sideLabel[1]);
         sideButtonsPanel.add(sideLabel[2]);
-        sideButtonsPanel.add(sideLabel[3]);
+        sideButtonsPanel.add(outerScrollPanel);
         sideButtonsPanel.add(sideLabelButtons[0]);
         sideButtonsPanel.add(sideLabelButtons[1]);
         sideButtonsPanel.add(sideLabelButtons[2]);
@@ -223,5 +259,72 @@ public class GUI {
         frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(sidePanel, BorderLayout.EAST);
         frame.add(bottomPanel);
+    }
+
+    public void resizeScroll(int turnNumber) {
+        int number = turnNumber / 2;
+        whiteMovesLabel.setPreferredSize(new Dimension(125, number * 25 + 30));
+        blackMovesLabel.setPreferredSize(new Dimension(125, number * 25 + 30));
+        scrollPanePanel.setPreferredSize(new Dimension(329, number * 25 + 60));
+        JScrollBar sb = scrollPane.getVerticalScrollBar();
+        sb.setValue(sb.getMaximum());
+    }
+
+    // promotion
+    public void reprintScroll(boolean whiteTurn, String figure, int fromX, int toX) {
+        char c = (char) (fromX + 1 + 64 + 32);
+        String X1 = String.valueOf(c);
+        c = (char) (toX + 1 + 64 + 32);
+        String X2 = String.valueOf(c);
+        if (whiteTurn == true) {
+            whiteMovesLabel
+                    .setText(whiteMovesLabel.getText() + numberOnGUI++ + ". " + "P" + X1 + X2 + figure + newLine2);
+        } else {
+            blackMovesLabel.setText(blackMovesLabel.getText() + "P" + X1 + X2 + figure + newLine2);
+        }
+    }
+
+    // normal
+    public void reprintScroll(boolean whiteTurn, String figure, int fromX, int fromY, int toX, int toY,
+            boolean isStrike) {
+        String Y1 = Integer.toString(defaultSettings.boardWidth - fromY);
+        String Y2 = Integer.toString(defaultSettings.boardWidth - toY);
+        char c = (char) (fromX + 1 + 64 + 32);
+        String X1 = String.valueOf(c);
+        c = (char) (toX + 1 + 64 + 32);
+        String X2 = String.valueOf(c);
+        if (whiteTurn == true) {
+            if (isStrike == true)
+                whiteMovesLabel.setText(
+                        whiteMovesLabel.getText() + numberOnGUI++ + ". " + figure + X1 + Y1 + "x" + X2 + Y2 + newLine2);
+            else
+                whiteMovesLabel
+                        .setText(whiteMovesLabel.getText() + numberOnGUI++ + ". " + figure + X1 + Y1 + X2 + Y2
+                                + newLine2);
+        }
+        if (whiteTurn == false) {
+            if (isStrike == true)
+                blackMovesLabel.setText(blackMovesLabel.getText() + figure + X1 + Y1 + "x" + X2 + Y2 + newLine2);
+            else
+                blackMovesLabel.setText(blackMovesLabel.getText() + figure + X1 + Y1 + X2 + Y2 + newLine2);
+        }
+    }
+
+    // castle
+    public void reprintScroll(boolean whiteTurn, boolean castle, boolean isLong) {
+        if (whiteTurn == true) {
+            if (isLong == true) {
+                whiteMovesLabel.setText(whiteMovesLabel.getText() + numberOnGUI++ + ". " + "O-O-O" + newLine2);
+            } else {
+                whiteMovesLabel.setText(whiteMovesLabel.getText() + numberOnGUI++ + ". " + "O-O" + newLine2);
+            }
+        }
+        if (whiteTurn == false) {
+            if (isLong == true) {
+                blackMovesLabel.setText(blackMovesLabel.getText() + "O-O-O" + newLine2);
+            } else {
+                blackMovesLabel.setText(blackMovesLabel.getText() + "O-O" + newLine2);
+            }
+        }
     }
 }

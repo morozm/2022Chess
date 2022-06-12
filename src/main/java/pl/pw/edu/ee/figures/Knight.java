@@ -4,6 +4,7 @@ public class Knight extends Figure {
     public Knight(){
         this.value = 3;
         this.type = "knight";
+        this.typeShort = "N";
     }
 
     public Knight(Figure knight) {
@@ -16,6 +17,7 @@ public class Knight extends Figure {
         this.hasBeenMoved = knight.hasBeenMoved;
         this.legalMovesStrikes = knight.legalMovesStrikes;
         this.type = knight.type;
+        this.typeShort = knight.typeShort;
         this.value = knight.value;
     }
 

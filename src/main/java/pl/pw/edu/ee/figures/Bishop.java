@@ -4,6 +4,7 @@ public class Bishop extends Figure {
     public Bishop() {
         this.value = 3;
         this.type = "bishop";
+        this.typeShort = "B";
     }
 
     public Bishop(Figure bishop) {
@@ -16,6 +17,7 @@ public class Bishop extends Figure {
         this.hasBeenMoved = bishop.hasBeenMoved;
         this.legalMovesStrikes = bishop.legalMovesStrikes;
         this.type = bishop.type;
+        this.typeShort = bishop.typeShort;
         this.value = bishop.value;
     }
 

@@ -4,6 +4,7 @@ public class King extends Figure {
     public King() {
         this.value = 0;
         this.type = "king";
+        this.typeShort = "K";
     }
 
     public King(Figure king) {
@@ -16,6 +17,7 @@ public class King extends Figure {
         this.hasBeenMoved = king.hasBeenMoved;
         this.legalMovesStrikes = king.legalMovesStrikes;
         this.type = king.type;
+        this.typeShort = king.typeShort;
         this.value = king.value;
     }
 

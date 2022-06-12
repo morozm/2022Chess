@@ -4,6 +4,7 @@ public class Rook extends Figure {
     public Rook(){
         this.value = 5;
         this.type = "rook";
+        this.typeShort = "R";
     }
 
     public Rook(Figure rook) {
@@ -16,6 +17,7 @@ public class Rook extends Figure {
         this.hasBeenMoved = rook.hasBeenMoved;
         this.legalMovesStrikes = rook.legalMovesStrikes;
         this.type = rook.type;
+        this.typeShort = rook.typeShort;
         this.value = rook.value;
     }
 

@@ -14,6 +14,7 @@ public abstract class Figure {
     public boolean hasBeenMoved = false;
     public boolean isJustDoubleMovedPawn = false;
     public String type = "";
+    public String typeShort = "";
 
     public void setAvailableMoves(Figure[][] board, boolean[][] attackedByWhiteBoard,
             boolean[][] attackedByBlackBoard, int currentX, int currentY) { // sets available moves and strikes

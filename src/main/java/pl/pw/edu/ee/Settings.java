@@ -23,6 +23,8 @@ public class Settings {
         Font font2 = new Font("Guardians", Font.BOLD, (int) (400 / (Math.pow(Math.max(boardLength, boardWidth), 1.5))));
         Font font3 = new Font("Guardians", Font.BOLD, 18);
         Font font4 = new Font("Guardians", Font.BOLD, 12);
+        Font font5 = new Font("Guardians", Font.BOLD, 10);
+        Font font6 = new Font("blackpast", Font.PLAIN, 22);
 
         String[][] defaultPosition = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },

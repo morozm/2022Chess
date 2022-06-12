@@ -4,6 +4,7 @@ public class Pawn extends Figure {
     public Pawn() {
         this.value = 1;
         this.type = "pawn";
+        this.typeShort = "P";
     }
 
     public Pawn(Figure pawn) {
@@ -16,6 +17,7 @@ public class Pawn extends Figure {
         this.hasBeenMoved = pawn.hasBeenMoved;
         this.legalMovesStrikes = pawn.legalMovesStrikes;
         this.type = pawn.type;
+        this.typeShort = pawn.typeShort;
         this.value = pawn.value;
     }
 

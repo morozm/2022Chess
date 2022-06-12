@@ -79,8 +79,9 @@ public class Chess implements ActionListener {
 		setAvailableMovesForBoard(mainBoard, defaultBoard);
 		setLegalMovesForBoard(whiteTurn);
 		setAllMovesArrayList();
-		setTurnText(turnNumber);
-		System.out.println("test");
+		setTurnText((turnNumber + 1) / 2);
+		// System.out.println("test");
+		gui.resizeScroll(turnNumber);
 		// firstTurn();
 	}
 
@@ -102,11 +103,32 @@ public class Chess implements ActionListener {
 							&& (mainBoard[selectedButtonX][selectedButtonY].color == whiteTurn)) {
 						justPromoted = false;
 						if (mainBoard[selectedButtonX][selectedButtonY].availableCastle[j][i] == true) {
+							boolean isLong;
+							if (selectedButtonX >= j)
+								isLong = true;
+							else
+								isLong = false;
+							gui.reprintScroll(whiteTurn, true, isLong);
 							moveCastle(selectedButtonX, selectedButtonY, j, i, mainBoard);
 							moveGUICastle(selectedButtonX, selectedButtonY, j, i);
 							saveLastMove(selectedButtonX, selectedButtonY, j, i);
 							turnOnLastMove();
 						} else {
+							if (!((i == mainBoard[0].length - 1
+									&& mainBoard[selectedButtonX][selectedButtonY].color == false
+									&& mainBoard[selectedButtonX][selectedButtonY].type == "pawn")
+									|| (i == 0
+											&& mainBoard[selectedButtonX][selectedButtonY].color == true
+											&& mainBoard[selectedButtonX][selectedButtonY].type == "pawn"))) {
+								if (mainBoard[selectedButtonX][selectedButtonY].availableMoves[j][i] == true)
+									gui.reprintScroll(whiteTurn, mainBoard[selectedButtonX][selectedButtonY].typeShort,
+											selectedButtonX,
+											selectedButtonY, j, i, false);
+								if (mainBoard[selectedButtonX][selectedButtonY].availableStrikes[j][i] == true)
+									gui.reprintScroll(whiteTurn, mainBoard[selectedButtonX][selectedButtonY].typeShort,
+											selectedButtonX,
+											selectedButtonY, j, i, true);
+							}
 							moveFigure(selectedButtonX, selectedButtonY, j, i, mainBoard);
 							moveGUI(selectedButtonX, selectedButtonY, j, i);
 							checkPromotion(j, i, mainBoard);
@@ -123,15 +145,16 @@ public class Chess implements ActionListener {
 							checkCheck(mainBoard, defaultBoard, !whiteTurn);
 							checkStaleMate(mainBoard, defaultBoard, !whiteTurn);
 							pauseTimer(whiteTurn);
+							gui.resizeScroll(turnNumber + 1);
 							if (gameStopped == false) {
 								startTimer(!whiteTurn);
 								whiteTurn = !whiteTurn;
 								turnNumber++;
 							}
-							setTurnText(turnNumber);
+							setTurnText((turnNumber + 1) / 2);
 							turnOnLastMove();
 						}
-						System.out.println("test");
+						// System.out.println("test");
 					} else { // turn off all buttons and select one
 						turnOffAllButtons();
 						turnOnLastMove();
@@ -464,24 +487,28 @@ public class Chess implements ActionListener {
 			board[lastMove[2]][lastMove[3]].type = "rook";
 			board[lastMove[2]][lastMove[3]].value = 5;
 			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "R", lastMove[0], lastMove[2]);
 		}
 		if (whichButton == 1) {
 			board[lastMove[2]][lastMove[3]] = new Knight(board[lastMove[2]][lastMove[3]]);
 			board[lastMove[2]][lastMove[3]].type = "knight";
 			board[lastMove[2]][lastMove[3]].value = 3;
 			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "N", lastMove[0], lastMove[2]);
 		}
 		if (whichButton == 2) {
 			board[lastMove[2]][lastMove[3]] = new Bishop(board[lastMove[2]][lastMove[3]]);
 			board[lastMove[2]][lastMove[3]].type = "bishop";
 			board[lastMove[2]][lastMove[3]].value = 3;
 			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "B", lastMove[0], lastMove[2]);
 		}
 		if (whichButton == 3) {
 			board[lastMove[2]][lastMove[3]] = new Queen(board[lastMove[2]][lastMove[3]]);
 			board[lastMove[2]][lastMove[3]].type = "queen";
 			board[lastMove[2]][lastMove[3]].value = 9;
 			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "Q", lastMove[0], lastMove[2]);
 		}
 		for (int i = 0; i < defaultSettings.boardWidth; i++) {
 			for (int j = 0; j < defaultSettings.boardLength; j++) {
@@ -495,12 +522,13 @@ public class Chess implements ActionListener {
 		checkCheck(mainBoard, defaultBoard, !whiteTurn);
 		checkStaleMate(mainBoard, defaultBoard, !whiteTurn);
 		pauseTimer(whiteTurn);
+		gui.resizeScroll(turnNumber + 1);
 		if (gameStopped == false) {
 			startTimer(!whiteTurn);
 			whiteTurn = !whiteTurn;
 			turnNumber++;
 		}
-		setTurnText(turnNumber);
+		setTurnText((turnNumber + 1) / 2);
 		turnOnLastMove();
 	}
 
