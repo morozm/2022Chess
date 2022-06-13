@@ -27,7 +27,7 @@ public class Settings {
         Font font6 = new Font("blackpast", Font.PLAIN, 22);
         Font font7 = new Font("Counter-Strike Regular", Font.PLAIN, 30);
 
-        String[][] defaultPosition1 = {
+        String[][] defaultPosition = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -67,7 +67,7 @@ public class Settings {
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "wR", "wR", "wR", "  ", "wR", "wR", "wR" }
         };
-        String[][] defaultPosition = {
+        String[][] defaultPosition5 = {
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "wP", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -105,7 +105,7 @@ public class Settings {
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
-                        { "  ", "wQ", "  ", "  ", "  ", "  ", "  ", "  " }
+                        { "  ", "wQ", "  ", "  ", "  ", "  ", "  ", "wK" }
         };
         String[][] defaultPosition9 = {
                         { "  ", "  ", "bR", "  ", "  ", "  ", "  ", "bK" },
