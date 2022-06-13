@@ -59,6 +59,12 @@ public class TimerLabel extends JLabel {
         timer.start();
     }
 
+    public void resetTimer() {
+        remainingTime = 10 * 60 * 1000 + 100;
+        setText(getRemainingTime());
+        repaint();
+    }
+
     public boolean isRunOutOfTime() {
         if (remainingTime == 0) {
             return true;

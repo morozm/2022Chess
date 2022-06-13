@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -23,6 +24,7 @@ public class GUI {
     Settings defaultSettings = new Settings();
 
     JFrame frame = new JFrame();
+    JFrame newGameFrame = new JFrame("New game");
 
     JPanel titlePanel = new JPanel();
     JPanel buttonPanel = new JPanel();
@@ -43,6 +45,8 @@ public class GUI {
     JScrollPane scrollPane = new JScrollPane(scrollPanePanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+    JButton players = new JButton();
+    JButton bot = new JButton();
     JButton[] sideLabelButtons = new JButton[6];
     JButton[] sideButtons = new JButton[4];
     JButton[][] buttons = new JButton[defaultSettings.boardLength][defaultSettings.boardWidth];
@@ -326,5 +330,68 @@ public class GUI {
                 blackMovesLabel.setText(blackMovesLabel.getText() + "O-O" + newLine2);
             }
         }
+    }
+
+    public void clearScroll(){
+        numberOnGUI = 1;
+        whiteMovesLabel.setText(startText);
+        blackMovesLabel.setText(startText);
+    }
+
+    public void openNewGameWindow() {
+        
+        newGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        newGameFrame.setIconImage(piecesIcons[11].getImage());
+        newGameFrame.getContentPane().setBackground(defaultSettings.mainColor2);
+        newGameFrame.setSize(600, 300);
+        newGameFrame.setResizable(false);
+        newGameFrame.setLayout(new BorderLayout());
+        newGameFrame.setVisible(true);
+        newGameFrame.setLocation(300, 315);
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JLabel label = new JLabel();
+        label.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 100));
+        label.setBorder(border1);
+
+        JLabel textLabel = new JLabel();
+        textLabel.setBackground(defaultSettings.mainColor2);
+        textLabel.setForeground(defaultSettings.mainColor1);
+        textLabel.setFont(defaultSettings.font1);
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setText("Nowa gra?");
+        textLabel.setOpaque(true);
+        textLabel.setBorder(border1);
+
+        players.setFocusable(false);
+        players.setHorizontalAlignment(JLabel.CENTER);
+        players.setPreferredSize(new Dimension(200, 100));
+        players.setForeground(defaultSettings.mainColor1);
+        players.setBackground(defaultSettings.mainColor2);
+        players.setFont(defaultSettings.font7);
+        players.setOpaque(true);
+        players.setBorder(border1);
+        players.setText("Z graczem");
+        // players.addActionListener((ActionListener) this);
+
+        bot.setFocusable(false);
+        bot.setHorizontalAlignment(JLabel.CENTER);
+        bot.setPreferredSize(new Dimension(200, 100));
+        bot.setForeground(defaultSettings.mainColor1);
+        bot.setBackground(defaultSettings.mainColor2);
+        bot.setFont(defaultSettings.font7);
+        bot.setOpaque(true);
+        bot.setBorder(border1);
+        bot.setText("Z botem");
+
+        newGameFrame.add(textLabel, BorderLayout.NORTH);
+        newGameFrame.add(label);
+        label.add(players);
+        label.add(bot);
     }
 }

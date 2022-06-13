@@ -25,6 +25,7 @@ public class Settings {
         Font font4 = new Font("Guardians", Font.BOLD, 12);
         Font font5 = new Font("Guardians", Font.BOLD, 10);
         Font font6 = new Font("blackpast", Font.PLAIN, 22);
+        Font font7 = new Font("Counter-Strike Regular", Font.PLAIN, 30);
 
         String[][] defaultPosition = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
