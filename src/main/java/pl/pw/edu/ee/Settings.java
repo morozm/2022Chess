@@ -27,7 +27,7 @@ public class Settings {
         Font font6 = new Font("blackpast", Font.PLAIN, 22);
         Font font7 = new Font("Counter-Strike Regular", Font.PLAIN, 30);
 
-        String[][] defaultPosition = {
+        String[][] defaultPosition1 = {
                         { "bR", "bN", "bB", "bQ", "bK", "bB", "bN", "bR" },
                         { "bP", "bP", "bP", "bP", "bP", "bP", "bP", "bP" },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -67,8 +67,8 @@ public class Settings {
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "wR", "wR", "wR", "  ", "wR", "wR", "wR" }
         };
-        String[][] defaultPosition5 = {
-                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "bK" },
+        String[][] defaultPosition = {
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "wP", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
                         { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
@@ -135,6 +135,16 @@ public class Settings {
                         { "bK", "  ", "  " },
                         { "  ", "  ", "  " },
                         { "  ", "wQ", "  " }
+        };
+        String[][] defaultPosition12 = {
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "bP", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "wP", "  ", "  ", "  " },
+                        { "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  " }
         };
         boolean[][] defaultPositionHasBeenMoved = {
                         { false, false, false, false, false, false, false, false, },

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -25,6 +24,11 @@ public class GUI {
 
     JFrame frame = new JFrame();
     JFrame newGameFrame = new JFrame("New game");
+    JFrame blackWinGameFrame = new JFrame();
+    JFrame whiteWinGameFrame = new JFrame();
+    JFrame stalemateFrame = new JFrame();
+    JFrame blackLoseTimeFrame = new JFrame();
+    JFrame whiteLoseTimeFrame = new JFrame();
 
     JPanel titlePanel = new JPanel();
     JPanel buttonPanel = new JPanel();
@@ -332,14 +336,14 @@ public class GUI {
         }
     }
 
-    public void clearScroll(){
+    public void clearScroll() {
         numberOnGUI = 1;
         whiteMovesLabel.setText(startText);
         blackMovesLabel.setText(startText);
     }
 
     public void openNewGameWindow() {
-        
+
         newGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         newGameFrame.setIconImage(piecesIcons[11].getImage());
         newGameFrame.getContentPane().setBackground(defaultSettings.mainColor2);
@@ -393,5 +397,180 @@ public class GUI {
         newGameFrame.add(label);
         label.add(players);
         label.add(bot);
+    }
+
+    public void openWinGameWindowWhite() {
+        JLabel label = new JLabel();
+        JLabel textLabel = new JLabel();
+
+        textLabel.setText("White won by checkmate!");
+
+        whiteWinGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        whiteWinGameFrame.setIconImage(piecesIcons[11].getImage());
+        whiteWinGameFrame.getContentPane().setBackground(defaultSettings.mainColor2);
+        whiteWinGameFrame.setSize(800, 300);
+        whiteWinGameFrame.setResizable(false);
+        whiteWinGameFrame.setLayout(new BorderLayout());
+        whiteWinGameFrame.setVisible(true);
+        whiteWinGameFrame.setLocation(300, 315);
+        whiteWinGameFrame.setTitle("Mate");
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        label.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 100));
+        label.setBorder(border1);
+
+        textLabel.setBackground(defaultSettings.mainColor2);
+        textLabel.setForeground(defaultSettings.mainColor1);
+        textLabel.setFont(defaultSettings.font1);
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setOpaque(true);
+
+        label.add(textLabel);
+        whiteWinGameFrame.add(label);
+    }
+
+    public void openWinGameWindowBlack() {
+        JLabel label = new JLabel();
+        JLabel textLabel = new JLabel();
+
+        textLabel.setText("Black won by checkmate!");
+
+        blackWinGameFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        blackWinGameFrame.setIconImage(piecesIcons[11].getImage());
+        blackWinGameFrame.getContentPane().setBackground(defaultSettings.mainColor2);
+        blackWinGameFrame.setSize(800, 300);
+        blackWinGameFrame.setResizable(false);
+        blackWinGameFrame.setLayout(new BorderLayout());
+        blackWinGameFrame.setVisible(true);
+        blackWinGameFrame.setLocation(300, 315);
+        blackWinGameFrame.setTitle("Mate");
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        label.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 100));
+        label.setBorder(border1);
+
+        textLabel.setBackground(defaultSettings.mainColor2);
+        textLabel.setForeground(defaultSettings.mainColor1);
+        textLabel.setFont(defaultSettings.font1);
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setOpaque(true);
+
+        label.add(textLabel);
+        blackWinGameFrame.add(label);
+    }
+
+    public void openDrawGameWindow() {
+        JLabel label = new JLabel();
+        JLabel textLabel = new JLabel();
+
+        textLabel.setText("It's a stalemate!");
+
+        stalemateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        stalemateFrame.setIconImage(piecesIcons[11].getImage());
+        stalemateFrame.getContentPane().setBackground(defaultSettings.mainColor2);
+        stalemateFrame.setSize(800, 300);
+        stalemateFrame.setResizable(false);
+        stalemateFrame.setLayout(new BorderLayout());
+        stalemateFrame.setVisible(true);
+        stalemateFrame.setLocation(300, 315);
+        stalemateFrame.setTitle("Stalemate");
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        label.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 100));
+        label.setBorder(border1);
+
+        textLabel.setBackground(defaultSettings.mainColor2);
+        textLabel.setForeground(defaultSettings.mainColor1);
+        textLabel.setFont(defaultSettings.font1);
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setOpaque(true);
+
+        label.add(textLabel);
+        stalemateFrame.add(label);
+    }
+
+    public void openLoseTimeBlackWindow() {
+        JLabel label = new JLabel();
+        JLabel textLabel = new JLabel();
+
+        textLabel.setText(startText + "Black run out of time!" + newLine2 + newLine2  + "<center>White wins!</center>" + endText);
+
+        blackLoseTimeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        blackLoseTimeFrame.setIconImage(piecesIcons[11].getImage());
+        blackLoseTimeFrame.getContentPane().setBackground(defaultSettings.mainColor2);
+        blackLoseTimeFrame.setSize(800, 300);
+        blackLoseTimeFrame.setResizable(false);
+        blackLoseTimeFrame.setLayout(new BorderLayout());
+        blackLoseTimeFrame.setVisible(true);
+        blackLoseTimeFrame.setLocation(300, 315);
+        blackLoseTimeFrame.setTitle("No time");
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        label.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 80));
+        label.setBorder(border1);
+
+        textLabel.setBackground(defaultSettings.mainColor2);
+        textLabel.setForeground(defaultSettings.mainColor1);
+        textLabel.setFont(defaultSettings.font1);
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setOpaque(true);
+
+        label.add(textLabel);
+        blackLoseTimeFrame.add(label);
+    }
+
+    public void openLoseTimeWhiteWindow() {
+        JLabel label = new JLabel();
+        JLabel textLabel = new JLabel();
+
+        textLabel.setText(startText + "White run out of time!" + newLine2 + newLine2 + "<center>Black wins!</center>");
+
+        whiteLoseTimeFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        whiteLoseTimeFrame.setIconImage(piecesIcons[11].getImage());
+        whiteLoseTimeFrame.getContentPane().setBackground(defaultSettings.mainColor2);
+        whiteLoseTimeFrame.setSize(800, 300);
+        whiteLoseTimeFrame.setResizable(false);
+        whiteLoseTimeFrame.setLayout(new BorderLayout());
+        whiteLoseTimeFrame.setVisible(true);
+        whiteLoseTimeFrame.setLocation(300, 315);
+        whiteLoseTimeFrame.setTitle("No time");
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        label.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 80));
+        label.setBorder(border1);
+
+        textLabel.setBackground(defaultSettings.mainColor2);
+        textLabel.setForeground(defaultSettings.mainColor1);
+        textLabel.setFont(defaultSettings.font1);
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
+        textLabel.setOpaque(true);
+
+        label.add(textLabel);
+        whiteLoseTimeFrame.add(label);
     }
 }

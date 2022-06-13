@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -59,11 +58,13 @@ public class Chess implements ActionListener {
 					gameStopped = true;
 					System.out.println("BLACK WIN (white run out of time)");
 					System.out.println("Wie pan co to znaczy przegrać na czas?");
+					gui.openLoseTimeWhiteWindow();
 				}
 				if (((TimerLabel) gui.sideLabel[2]).isRunOutOfTime() == true && gameStopped == false) {
 					gameStopped = true;
 					System.out.println("WHITE WIN (black run out of time)");
 					System.out.println("Wie pan co to znaczy przegrać na czas?");
+					gui.openLoseTimeBlackWindow();
 				}
 			}
 		});
@@ -254,9 +255,9 @@ public class Chess implements ActionListener {
 		int toY = allMoves.get(rng).toY;
 		boolean isCastle = allMoves.get(rng).isCastle;
 		// try {
-		// 	Thread.sleep(1000);
+		// Thread.sleep(1000);
 		// } catch (InterruptedException ex) {
-		// 	Thread.currentThread().interrupt();
+		// Thread.currentThread().interrupt();
 		// }
 		// System.out.println(move+ " "+allMoves.size());
 
@@ -290,29 +291,82 @@ public class Chess implements ActionListener {
 			}
 			moveFigure(fromX, fromY, toX, toY, mainBoard);
 			moveGUI(fromX, fromY, toX, toY);
-			checkPromotion(toX, toY, mainBoard);
-			saveLastMove(fromX, fromY, toX, toY);
-			turnOnLastMove();
-			// mvoes a figure on board
-		}
-		turnOffAllButtons();
-		buttonIsSelected = false;
-		if (justPromoted == false) {
-			setAvailableMovesForBoard(mainBoard, defaultBoard);
-			setLegalMovesForBoard(!whiteTurn);
-			setAllMovesArrayList();
-			checkCheck(mainBoard, defaultBoard, !whiteTurn);
-			checkStaleMate(mainBoard, defaultBoard, !whiteTurn);
-			pauseTimer(whiteTurn);
-			gui.resizeScroll(turnNumber + 1);
-			if (gameStopped == false) {
-				startTimer(!whiteTurn);
-				whiteTurn = !whiteTurn;
-				turnNumber++;
+			// checkPromotion(toX, toY, mainBoard);
+			if ((toY == mainBoard[0].length - 1 && mainBoard[toX][toY].color == false
+					&& mainBoard[toX][toY].type == "pawn")
+					|| (toY == 0 && mainBoard[toX][toY].color == true
+							&& mainBoard[toX][toY].type == "pawn")) {
+				saveLastMove(fromX, fromY, toX, toY);
+				promoteBot(mainBoard);
+				justPromoted = true;
+				turnOnLastMove();
+				// mvoes a figure on board
 			}
-			setTurnText((turnNumber + 1) / 2);
-			turnOnLastMove();
+			turnOffAllButtons();
+			buttonIsSelected = false;
+			if (justPromoted == false) {
+				setAvailableMovesForBoard(mainBoard, defaultBoard);
+				setLegalMovesForBoard(!whiteTurn);
+				setAllMovesArrayList();
+				checkCheck(mainBoard, defaultBoard, !whiteTurn);
+				checkStaleMate(mainBoard, defaultBoard, !whiteTurn);
+				pauseTimer(whiteTurn);
+				gui.resizeScroll(turnNumber + 1);
+				if (gameStopped == false) {
+					startTimer(!whiteTurn);
+					whiteTurn = !whiteTurn;
+					turnNumber++;
+				}
+				setTurnText((turnNumber + 1) / 2);
+				turnOnLastMove();
+			}
 		}
+	}
+
+	void promoteBot(Figure[][] board) {
+		int whichButton = random.nextInt(4);
+		if (whichButton == 0) {
+			board[lastMove[2]][lastMove[3]] = new Rook(board[lastMove[2]][lastMove[3]]);
+			board[lastMove[2]][lastMove[3]].type = "rook";
+			board[lastMove[2]][lastMove[3]].value = 5;
+			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "R", lastMove[0], lastMove[2]);
+		}
+		if (whichButton == 1) {
+			board[lastMove[2]][lastMove[3]] = new Knight(board[lastMove[2]][lastMove[3]]);
+			board[lastMove[2]][lastMove[3]].type = "knight";
+			board[lastMove[2]][lastMove[3]].value = 3;
+			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "N", lastMove[0], lastMove[2]);
+		}
+		if (whichButton == 2) {
+			board[lastMove[2]][lastMove[3]] = new Bishop(board[lastMove[2]][lastMove[3]]);
+			board[lastMove[2]][lastMove[3]].type = "bishop";
+			board[lastMove[2]][lastMove[3]].value = 3;
+			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "B", lastMove[0], lastMove[2]);
+		}
+		if (whichButton == 3) {
+			board[lastMove[2]][lastMove[3]] = new Queen(board[lastMove[2]][lastMove[3]]);
+			board[lastMove[2]][lastMove[3]].type = "queen";
+			board[lastMove[2]][lastMove[3]].value = 9;
+			changeGUI(whichButton);
+			gui.reprintScroll(whiteTurn, "Q", lastMove[0], lastMove[2]);
+		}
+		setAvailableMovesForBoard(mainBoard, defaultBoard);
+		setLegalMovesForBoard(!whiteTurn);
+		setAllMovesArrayList();
+		checkCheck(mainBoard, defaultBoard, !whiteTurn);
+		checkStaleMate(mainBoard, defaultBoard, !whiteTurn);
+		pauseTimer(whiteTurn);
+		gui.resizeScroll(turnNumber + 1);
+		if (gameStopped == false) {
+			startTimer(!whiteTurn);
+			whiteTurn = !whiteTurn;
+			turnNumber++;
+		}
+		setTurnText((turnNumber + 1) / 2);
+		turnOnLastMove();
 	}
 
 	void loadPosition() {
@@ -448,7 +502,8 @@ public class Chess implements ActionListener {
 					for (int l = 0; l < defaultSettings.boardLength; l++) {
 						if (mainBoard[j][i].legalMovesStrikes[l][k] == true)
 							allMoves.add(new Move(mainBoard, j, i, l, k, false));
-						else if (mainBoard[j][i].availableCastle[l][k] == true && (mainBoard[j][i].color == !whiteTurn)) {
+						else if (mainBoard[j][i].availableCastle[l][k] == true
+								&& (mainBoard[j][i].color == !whiteTurn)) {
 							allMoves.add(new Move(mainBoard, j, i, l, k, true));
 						}
 					}
@@ -1047,10 +1102,14 @@ public class Chess implements ActionListener {
 
 	void checkMate(boolean enemy) {
 		if (allMoves.size() == 0) {
-			if (mainBoard[lastMove[2]][lastMove[3]].color == true)
+			if (mainBoard[lastMove[2]][lastMove[3]].color == true) {
 				System.out.println("MATE (by white)");
-			if (mainBoard[lastMove[2]][lastMove[3]].color == false)
+				gui.openWinGameWindowWhite();
+			}
+			if (mainBoard[lastMove[2]][lastMove[3]].color == false) {
 				System.out.println("MATE (by black)");
+				gui.openWinGameWindowBlack();
+			}
 			System.out.println("Wie pan co to znaczy dostać szewca?");
 			gameStopped = true;
 		}
@@ -1064,6 +1123,7 @@ public class Chess implements ActionListener {
 				if (mainBoard[lastMove[2]][lastMove[3]].color == false)
 					System.out.println("STALEMATE (by black)");
 				System.out.println("Wie pan co to znaczy zrobić pata?");
+				gui.openDrawGameWindow();
 				gameStopped = true;
 			}
 		}
